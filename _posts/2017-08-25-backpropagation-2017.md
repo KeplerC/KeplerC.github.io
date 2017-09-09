@@ -1,3 +1,12 @@
+---
+layout: post
+title: A study of Backpropagation 
+date: 2017-8-25
+author: KC
+catalog: true
+
+---
+
 # A study of Backpropagation 
 As usual, the definition of backpropagation algorithm on wikipedia is 
 >Backpropagation is a method used in artificial neural networks(ANN) to calculate the error contribution of each neuron after a batch of data (in image recognition, multiple images) is processed.
