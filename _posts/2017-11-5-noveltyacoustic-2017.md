@@ -1,13 +1,15 @@
 ---
 layout: post
-title: A novel approach for automatic acoustic novelty detection using a denoising autoencoder with bidirectional LSTM neural networks 
+title: Autoencoder LSTM for acoustic novelty detection
 date: 2017-11-5
 author: KC
 catalog: true
 
 ---
 
-# A NOVEL APPROACH FOR AUTOMATIC ACOUSTIC NOVELTY DETECTION USING A DENOISING AUTOENCODER WITH BIDIRECTIONAL LSTM NEURAL NETWORKS
+#
+The paper is 
+> A novel approach for automatic acoustic novelty detection using a denoising autoencoder with bidirectional LSTM neural networks 
 
 This paper introduces unsupervised approaches for acoustic novelty detection. It relies on auditory spectral features (ASF), denoising auto encoder and BSTM RNN to detect novelty events and calculate reconstruction error of the sound. 
 
