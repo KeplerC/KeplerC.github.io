@@ -4,6 +4,8 @@ title: A study of Backpropagation
 date: 2017-8-25
 author: KC
 catalog: true
+tags:
+    - Machine Learning
 
 ---
 
