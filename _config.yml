@@ -1,7 +1,3 @@
----
-layout:     keynote
-iframe:     "http://huangxuan.me/js-module-7day/"
----
 
 # Site settings
 title: KClog
@@ -85,7 +81,7 @@ ga_domain: auto
 
 
 # Featured Tags
-featured-tags: false                     # 是否使用首页标签
+featured-tags: true                     # 是否使用首页标签
 featured-condition-size: 1              # 相同标签数量大于这个数，才会出现在首页
 
 
