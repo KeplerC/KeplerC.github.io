@@ -4,7 +4,9 @@ title: Autoencoder LSTM for acoustic novelty detection
 date: 2017-11-5
 author: KC
 catalog: true
-
+tags:
+    - Machine Learning
+    - Paper Review
 ---
 
 #
