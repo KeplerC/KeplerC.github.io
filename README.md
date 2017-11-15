@@ -1,1 +1,1 @@
-Blog Page: [keplerc98.github.io](keplerc98.github.io)
+Blog Page: [kychen.xyz](http://kychen.xyz)
