@@ -2,7 +2,7 @@
 layout: post
 title: Multi-task Sequence to Sequence Learning 
 date: 2017-11-26
-author: KC
+author: Kaiyuan Chen
 catalog: true
 tags:
     - Machine Learning

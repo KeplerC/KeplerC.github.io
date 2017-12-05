@@ -2,7 +2,7 @@
 layout: post
 title: Unsupervised Neural Translation Machine Translation
 date: 2017-11-30
-author: KC
+author: Kaiyuan Chen
 catalog: true
 tags:
     - Machine Learning

@@ -2,7 +2,7 @@
 layout: post
 title: Autoencoder LSTM for acoustic novelty detection
 date: 2017-11-5
-author: KC
+author: Kaiyuan Chen
 catalog: true
 tags:
     - Machine Learning

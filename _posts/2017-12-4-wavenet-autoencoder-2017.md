@@ -2,7 +2,7 @@
 layout: post
 title: Neural Audio Synthesis of Musical Notes with WaveNet Autoencoders
 date: 2017-12-4
-author: KC
+author: Kaiyuan Chen
 catalog: true
 tags:
     - Machine Learning

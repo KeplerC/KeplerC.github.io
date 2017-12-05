@@ -2,7 +2,7 @@
 layout: post
 title: A study of Backpropagation 
 date: 2017-8-25
-author: KC
+author: Kaiyuan Chen
 catalog: true
 tags:
     - Machine Learning

@@ -2,7 +2,7 @@
 layout: post
 title: Machine Translation and Language model
 date: 2017-11-19
-author: KC
+author: Kaiyuan Chen
 catalog: true
 tags:
     - Machine Learning
