@@ -1,0 +1,29 @@
+---
+layout: post
+title: Statement about ClassUCLA 
+date: 2018-3-1
+author: Developer
+catalog: true
+tags:
+    - Idea
+---
+
+大家好。
+这个周我的微信多了一百多位好友，大家加我也都为了一个目的：
+我的抢课软件。
+
+可能很多人认为，它只是一个作弊器，可是大家不知道的是，对我来说，它是一个公益项目。
+
+有很多人，分布在中国的各个角落，因为环境，有限的机遇，并没有受到优质的教育。可能在平行时空的他们，完成了义务教育，继续深造，成为了中国的Stephen Hawking，成为了我们仰望的学者，工程师，你，和我。这种绝望，比我们抢不到一节自己想上的课要更深，更痛。
+
+这种差距，是我们通过每个人的努力可以消除的。
+
+这就是这个项目。我希望能帮助他们，就跟我的ClassUCLA抢课软件一样去帮助大家选到需要的课。于是我决定，将大家所有的给我的donation，都以“UCLA中国留学生”的名义，去帮助他们。
+
+如果我的软件曾帮助过你，我恳请你帮一下我去完成这个软件最初的使命。我也会一直坚持去运营这个项目，不忘初心。
+
+本账目后期会完全透明（从捐助，到我如何使用这些钱），po在我github的ClassUCLA repo和我的个人主页上。
+
+--------
+再次附一下选课的rsvp链接：
+https://docs.google.com/forms/d/e/1FAIpQLSfAKEry3AgTk6K_lMWvswX7wdXzccqzKgeLZZ1qw-S5gPUwJw/viewform
