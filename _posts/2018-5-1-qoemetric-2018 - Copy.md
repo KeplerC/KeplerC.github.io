@@ -23,4 +23,4 @@ Procedia Computer Science 16
 		○ have a mapping between status of transmission queues, channel quality, QoS, buffer state etc. to scheduling parameters like SINR, throughput, target delay, HOL delay
 what they have is RNN: input SBR,SM, delay, speed, # of UE, output is MOS and fineness 
 
-□ ![./img/rnnga.png](./img/rnnga.png)
+![./img/rnnga.png](./img/rnnga.png)
