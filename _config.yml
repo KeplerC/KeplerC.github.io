@@ -12,8 +12,7 @@ github_repo: "https://github.com/KeplerC/KeplerC.github.io.git" # you code repos
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "<p>I am <strong>Kaiyuan Chen</strong>, a third-year undergraduate student from University of California, Los Angeles. Now I am working in <a href="http://metro.ucla.edu">Wireless Networking Group (WiNG)</a> at UCLA and my adviser is <a href="http://web.cs.ucla.edu/~yuanjie.li/">Yuanjie Li</a>.</p>
-    <p>My general interest is very broad. I study anything related to machine learning, artificial intelligence and big data, especially for anomaly detection and compressed sensing. I am also interested in computer network and bioinformatics. </p> <p>You can find my CV <a href="https://keplerc.github.io/Resume.pdf">here</a></p>"
+sidebar-about-description: "I am Kaiyuan Chen, a third-year undergraduate student from University of California, Los Angeles. Now I am working in Wireless Networking Group (WiNG) at UCLA and my adviser is My general interest is very broad. I study anything related to machine learning, artificial intelligence and big data, especially for anomaly detection and compressed sensing. I am also interested in computer network and bioinformatics. You can find my CV keplerc.github.io/Resume.pdf here"
 sidebar-avatar: /img/about-BY-gentle.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
