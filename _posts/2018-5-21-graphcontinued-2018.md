@@ -15,7 +15,7 @@ tags:
 
 |            | Inductive(generalize)   | Transductive(X generalize) |
 | ---------- | ----------------------- | -------------------------- |
-| supervised | SVM, Max Entropy        | X                          |
+| supervised | SVM, Max Entropy        | X itself                   |
 | ssl        | Manifold Regularization | Label Propagation          |
 
 Besides label propagation, there are other schemes based on random walk(modified adsorption), information theory K-L divergence(measure propagation). 
