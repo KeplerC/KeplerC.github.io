@@ -3,40 +3,16 @@ layout: page
 description: "Kaiyuan Chen | UCLA 2020er"
 ---
 
-{% for post in paginator.posts %}
-<div class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-        <h2 class="post-title">
-            {{ post.title }}
-        </h2>
-        {% if post.subtitle %}
-        <h3 class="post-subtitle">
-            {{ post.subtitle }}
-        </h3>
-        {% endif %}
-        <div class="post-content-preview">
-            {{ post.content | strip_html | truncate:200 }}
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
-    </p>
-</div>
-<hr>
-{% endfor %}
+<!-- Chinese Version -->
+<div class="zh post-container">
 
-<!-- Pager -->
-{% if paginator.total_pages > 1 %}
-<ul class="pager">
-    {% if paginator.previous_page %}
-    <li class="previous">
-        <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
-    </li>
-    {% endif %}
-    {% if paginator.next_page %}
-    <li class="next">
-        <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
-    </li>
-    {% endif %}
-</ul>
-{% endif %}
+    <!--copied from markdown -->
+
+    <p>I am <strong>Kaiyuan Chen</strong>, a third-year undergraduate student from University of California, Los Angeles. Now I am working in <a href="http://metro.ucla.edu">Wireless Networking Group (WiNG)</a> at UCLA and my adviser is <a href="http://web.cs.ucla.edu/~yuanjie.li/">Yuanjie Li</a>.</p>
+
+    <p>My general interest is very broad. I study anything related to machine learning, artificial intelligence and big data, especially for anomaly detection and compressed sensing. I am also interested in computer network and bioinformatics. </p>  
+
+    <p>You can find my CV <a href="https://keplerc.github.io/Resume.pdf">here</a></p>
+
+</div>
+
