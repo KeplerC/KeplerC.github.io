@@ -6,6 +6,10 @@ description: "Kaiyuan Chen | UCLA 2020er"
 
 
 {% for post in paginator.posts %}
+<script>
+console.log(post);
+</script>
+
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">
         <h2 class="post-title">
