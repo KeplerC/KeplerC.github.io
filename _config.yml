@@ -11,7 +11,7 @@ baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/KeplerC/KeplerC.github.io.git" # you code repository
 
 # Sidebar settings
-sidebar: True                           # whether or not using Sidebar.
+sidebar: False                           # whether or not using Sidebar.
 sidebar-about-description: ""
 sidebar-avatar: ""      # use absolute URL, seeing it's used in both `/` and `/about/`
 
