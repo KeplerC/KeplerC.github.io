@@ -1,0 +1,182 @@
+I"½F<h2 id="chapter-ii-end-to-end">Chapter II End-to-End</h2>
+
+<p>first we fetch the tgz file from https://raw.githubusercontent.com/ageron/handson-ml/master/ 
+by wget, then untar it to produce a Common separate value file.</p>
+
+<h3 id="loading-data-and-showing-them">Loading data and showing them</h3>
+<p>Then we write a function that loads csv data</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">load_housing_data</span><span class="p">(</span><span class="n">housing_path</span> <span class="o">=</span> <span class="n">HOUSING_PATH</span><span class="p">):</span>
+    <span class="n">csv_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">housing_path</span><span class="p">,</span> <span class="s">"housing.csv"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>and show them by</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">give_a_quick_view</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">"__________housing's head____________"</span><span class="p">)</span>
+    <span class="k">print</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">"_________ table information________"</span><span class="p">)</span>
+    <span class="k">print</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">"__________Data's descrpition_______"</span><span class="p">)</span>
+    <span class="k">print</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+    <span class="n">data</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">figsuze</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>longitude  latitude  housing_median_age  total_rooms  total_bedrooms  <br />
+0    -122.23     37.88                41.0        880.0           129.0 <br />
+1    -122.22     37.86                21.0       7099.0          1106.0 <br />
+2    -122.24     37.85                52.0       1467.0           190.0 <br />
+3    -122.25     37.85                52.0       1274.0           235.0 <br />
+4    -122.25     37.85                52.0       1627.0           280.0</p>
+
+<h3 id="create-a-test-set">Create a test set</h3>
+<h4 id="naive-approach">Naive approach</h4>
+<p>We randomly choose 20% of dataset, set them aside as test sets.
+(to detect overfitting)
+to do this, we call permutation and use [:] to split indices</p>
+<h4 id="a-stable-one">a stable one</h4>
+<p>use hash table 
+we add a housing ID by</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">housing_with_id</span> <span class="o">=</span> <span class="n">housing</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span> <span class="c1">#add an index column
+</span>    
+<span class="c1"># build a hash table by 
+</span>    <span class="nb">hash</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="n">indentifier</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">256</span> <span class="o">*</span> <span class="mf">0.2</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="c1"># and build test_set by 
+</span>    <span class="n">data</span><span class="p">[</span><span class="n">id_column</span><span class="p">]</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">id_</span><span class="p">:</span> <span class="p">(</span><span class="n">above</span> <span class="nb">hash</span> <span class="n">funct</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="a-simpler-one-by-kl-learn">A simpler one by kl learn</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">train_set</span><span class="p">,</span> <span class="n">test_set</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">housing</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>and we can use my self defined function to plot it</p>
+
+<h4 id="stratified-sampling">stratified sampling</h4>
+<p>Although this part is not implemented in code, I will learn from this lab report
+we divide population into homogenous subgroups called strata, and sample from each subgroups</p>
+
+<p>Use</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">housing</span><span class="p">[</span><span class="s">"median_income"</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>normalize it and choose from each subgroups</p>
+
+<h3 id="exploring-data">Exploring data</h3>
+<p>Scatter plot is a good way of showing data
+I used two of the plotting methods that the book offers</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">housing</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">"scatter"</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s">"longitude"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">"latitude"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">housing</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">"scatter"</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s">"longitude"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">"latitude"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="n">housing</span><span class="p">[</span><span class="s">"population"</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"population"</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">"median_house_value"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s">"jet"</span><span class="p">),</span> <span class="n">colorbar</span><span class="o">=</span><span class="bp">True</span><span class="p">,)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>to generate beautiful graphs</p>
+
+<h4 id="correlations">correlations</h4>
+<p>we find standard correlation pcc to find correlations between these data</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">housing</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+    <span class="c1">#and find closest correlationers by 
+</span>    <span class="n">corr_matrix</span><span class="p">[</span><span class="s">"median_house_value"</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>another way of doing this is use pandaâ€™s plotting technique</p>
+
+<p>Based on that we can even experiment on combination of factors (like rooms per household)</p>
+
+<p>through my self-defined function</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">correlation</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">corr</span><span class="p">()[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>  
+</code></pre></div></div>
+<p>we can generate a same result from book 
+median_house_value    1.000000
+median_income         0.688075
+total_rooms           0.134153
+housing_median_age    0.105623
+households            0.065843
+total_bedrooms        0.049686
+population           -0.024650
+longitude            -0.045967
+latitude             -0.144160</p>
+
+<h3 id="data-cleaning">Data Cleaning</h3>
+
+<h4 id="missing-features">Missing features</h4>
+<p><strong>Machine learning algorithm cannot work with missing features</strong></p>
+
+<p>to solve this problem, the book offers three ways of doing this:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">housing</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s">"total_bedrooms"</span><span class="p">])</span> <span class="c1"># option 1
+</span><span class="n">housing</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s">"total_bedrooms"</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># option 2
+</span><span class="n">median</span> <span class="o">=</span> <span class="n">housing</span><span class="p">[</span><span class="s">"total_bedrooms"</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">housing</span><span class="p">[</span><span class="s">"total_bedrooms"</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">median</span><span class="p">)</span> <span class="c1"># option 3
+</span></code></pre></div></div>
+
+<p>as name suggests, first one is get rid of corresponding districts, the second one is to ignore this whole attributes and the option 3 is the set to (mean, 0, median, etc)</p>
+
+<p>or use sklearn</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">Imputer</span>
+<span class="n">imputer</span> <span class="o">=</span> <span class="n">Imputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s">"median"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="text-and-categorical-attributes">text and categorical attributes</h4>
+<p>We preprocess the other label, ocean_proximity by labelling it.
+we can use pipeline for it by</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">FeatureUnion</span>
+
+<span class="n">num_attribs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">housing_num</span><span class="p">)</span>
+<span class="n">cat_attribs</span> <span class="o">=</span> <span class="p">[</span><span class="s">"ocean_proximity"</span><span class="p">]</span>
+
+<span class="n">num_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+<span class="p">(</span><span class="s">'imputer'</span><span class="p">,</span> <span class="n">Imputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s">"median"</span><span class="p">)),</span>
+<span class="p">(</span><span class="s">'attribs_adder'</span><span class="p">,</span> <span class="n">CombinedAttributesAdder</span><span class="p">()),</span>
+<span class="p">(</span><span class="s">'std_scaler'</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+<span class="p">])</span>
+
+<span class="n">cat_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+<span class="p">(</span><span class="s">'selector'</span><span class="p">,</span> <span class="n">DataFrameSelector</span><span class="p">(</span><span class="n">cat_attribs</span><span class="p">)),</span>
+<span class="p">(</span><span class="s">'label_binarizer'</span><span class="p">,</span> <span class="n">LabelBinarizer</span><span class="p">()),</span>
+<span class="p">])</span>
+
+<span class="n">full_pipeline</span> <span class="o">=</span> <span class="n">FeatureUnion</span><span class="p">(</span><span class="n">transformer_list</span><span class="o">=</span><span class="p">[</span>
+<span class="p">(</span><span class="s">"num_pipeline"</span><span class="p">,</span> <span class="n">num_pipeline</span><span class="p">),</span>
+<span class="p">(</span><span class="s">"cat_pipeline"</span><span class="p">,</span> <span class="n">cat_pipeline</span><span class="p">),</span>
+<span class="p">])</span>
+
+<span class="n">housing_num_tr</span> <span class="o">=</span> <span class="n">num_pipeline</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">housing_num</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>You framed the problem, you got the data and explored it, you sampled a training set and a test set, and you wrote transformation pipelines to clean up and prepare your data for Machine Learning algorithms automatically.</p>
+</blockquote>
+
+<p>We can self define transformers by initializing three major methods in a class</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">__init__</span>
+<span class="n">fit</span><span class="p">()</span>
+<span class="n">transform</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="train-model">Train model</h3>
+<p>It is very very easy to use libraries to do that. like</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="n">lin_reg</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">lin_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">housing_prepared</span><span class="p">,</span> <span class="n">housing_labels</span><span class="p">)</span>
+
+<span class="c1">#or 
+</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
+<span class="n">tree_reg</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">()</span>
+<span class="n">tree_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">housing_prepared</span><span class="p">,</span> <span class="n">housing_labels</span><span class="p">)</span>
+</code></pre></div></div>
+:ET

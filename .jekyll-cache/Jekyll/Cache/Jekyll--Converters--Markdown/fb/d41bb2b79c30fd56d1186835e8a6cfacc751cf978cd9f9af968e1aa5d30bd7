@@ -1,0 +1,39 @@
+I"]
+<h1 id="automatic-text-scoring-by-neural-network">Automatic Text Scoring By Neural Network</h1>
+<p>by Dimitrios Alikaniotis, Helen Yannakoudakis, Marek Rei</p>
+
+<p>This paper proposes to use RNN for ATS. My initial thought is that RNN highly depends on the ability to examine their characteristics, whether they measure what is intended to be measured and whether <em>their internal marking criteria can be interpreted in a meaningful and useful way</em>.</p>
+
+<h3 id="keywords">Keywords</h3>
+<p>ATS: systems typically exploit a large range of tex-tual features that correspond to different proper-ties of text, such as grammar, vocabulary, style, topic relevance, and discourse coherence and co-hesion.</p>
+
+<h3 id="models">Models</h3>
+<h4 id="cw">C&amp;W</h4>
+<p>(by Collobert and Weston) introduce a NN that learns a distributed representation for each word w in a corpus based on its local context. 
+Embedding of a word is learned by substituting target word to a randomly sampled word in dictionary <strong>discriminativly</strong>.</p>
+
+<p>S = {w1, w2  … wt … wn}
+S’= {w1, w2  … wc … wn} -&gt;substitute w_target to w_complement</p>
+
+<blockquote>
+  <p>The model learns word embeddings by ranking the activation of the true sequence S higher than the activation of its ‘noisy’ counterpart S’. The
+the activation of the true sequence S higher than the activation of its ‘noisy’ counterpart S’.</p>
+</blockquote>
+
+<h4 id="augmented-cw">Augmented C&amp;W</h4>
+<p>Goal is to capture score-specific word embeddings(SSWE), and then use linear output unit vector to do linear regression to predict essay score. Advantage is to have same word that conveys same information to depend on only linguisitic environment. Example in paper:</p>
+<blockquote>
+  <p>words such as computer and laptop are going to be placed together with their mis-spelled counterparts cop- muter and labtop</p>
+</blockquote>
+
+<h4 id="lstm">LSTM</h4>
+<p>Bidirectional: feed the embedding of each word found in each essay to the LSTM one at a time, zero-padding shorter sequences.</p>
+
+<h3 id="experiment">Experiment</h3>
+<p>None &lt; bidirectional &lt; word2vec &lt; SSWE 
+Thus the winner(of course) is SSWE + two layer BLSTM with pcc 0.96 and spearsman coefficient 0.91 
+The quality of word vectors is visualized by “a box”.</p>
+
+<h3 id="thoughts">Thoughts</h3>
+<p>I think the whole problem is solved rather by capturing SSWE. LSTM offers a good way to align the sequence and predicting, but what we really care in ATS is to score a text, which requires to find information that determines the score. This problem is solved by augumented C&amp;W model.</p>
+:ET

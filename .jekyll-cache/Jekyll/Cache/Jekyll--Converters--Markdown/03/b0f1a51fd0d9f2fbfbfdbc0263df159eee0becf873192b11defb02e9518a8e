@@ -1,0 +1,25 @@
+I"Ê<h1 id="neural-audio-synthesis-of-musical-notes-with-wavenet-autoencoders">Neural Audio Synthesis of Musical Notes with WaveNet Autoencoders</h1>
+<p>Engel et al.</p>
+
+<h3 id="contributions">Contributions</h3>
+<p>WaveNet-style autoencoder model that conditions an autoregressive decoder on temporal codes learned from the raw audio waveform.
+Nsync: a large-scale dataset for exploring neural audio synthesis of musical notes.</p>
+
+<h3 id="autoencoder">Autoencoder</h3>
+<p>this is the only thing that we really care about here.</p>
+
+<p>The encoder produces an embedding with Z=f(x) from raw audio waveform. Then we shift the same input and feed it into the decoder, which reproduce the waveform.</p>
+
+<p>Downsampling in the encoder occurs only in the average pooling layer. The embeddings are distributed in time and upsampled with nearest
+neighbor interpolation to the original resolution before biasing each layer of the decoder.</p>
+
+<p>During inference, the decoder autoregressively generates a single output sample at a time conditioned on an embedding and a starting palette of zeros</p>
+
+<p>https://github.com/tensorflow/magenta/blob/master/magenta/models/nsynth/wavenet/h512_bo16.py</p>
+
+<h4 id="baseline-spectral-autoencoder">Baseline: Spectral Autoencoder</h4>
+<p>The baseline convolutional autoencoder: it forces a compressed representation on entire note.</p>
+
+<h3 id="which-is-good">which is good</h3>
+<p>they give source code for base line and autoencoderâ€™s code.</p>
+:ET

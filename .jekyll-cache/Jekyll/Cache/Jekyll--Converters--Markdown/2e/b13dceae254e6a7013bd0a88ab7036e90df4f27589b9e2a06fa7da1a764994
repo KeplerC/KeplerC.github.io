@@ -1,0 +1,30 @@
+I"�<h1 id="parsing-and-question-classification-for-question-anwsering">Parsing and Question Classification for Question Anwsering</h1>
+<p>Ulf Hermjakob</p>
+
+<h3 id="question-treebank">Question Treebank</h3>
+<p>There are often several text passages that contain an answer, so if the parser does not produce a sufficiently good parse tree for some of the answer sentences, there’s still a good chance that the question can be answered correctly based on other sentences containing the answer.</p>
+
+<p>Parsing is highly dependent on difference between training corpus and application text. We have to expect a lower accuracy for parsing questions than for parsing declarative sentences.</p>
+
+<h3 id="qa-typeqtarget">QA Type(Qtarget)</h3>
+<p>it identifies type of the question as target. 
+Our paper saves a lot of this part, because catogories like “why” takes a lot of answer types.</p>
+
+<p>For example, for quantity, it is hierachical that 
+quantity</p>
+<ul>
+  <li>energy quantity</li>
+  <li>
+    <ul>
+      <li>spatial-quantity
+        <ul>
+          <li>distance</li>
+          <li>area</li>
+          <li>volume</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+:ET

@@ -1,0 +1,29 @@
+I"		<h1 id="dropout-a-simple-way-to-prevent-neural-networks-from-overfitting">Dropout A Simple Way to Prevent Neural Networks from Overfitting</h1>
+<p>by Srivastava et al.</p>
+
+<p>The key idea of dropout is to randomly drop units (along with their connections) from the neural network during training. During training, dropout samples from an exponential number of different “thinned” networks. At test time, it is easy to approximate the effect of averaging the predictions of all these thinned networks by simply using a single unthinned network that has smaller weight.</p>
+
+<p>For larger neural network, we cannot have separately trained net, so we have individual models different from each other and make neural network model different.</p>
+
+<h4 id="motivation-natural-selection--role-of-sex-in-evolution">Motivation: natural selection &amp; role of sex in evolution</h4>
+<p>It can be seen as a <strong>stochastic</strong> regularization techinque, with removing certain nodes at random.</p>
+
+<h3 id="model">Model</h3>
+<p><img src="https://raw.githubusercontent.com/KeplerC/keplerc.github.io/master/_posts/img/1225.png" alt="alt text" title="Logo Title Text 1" /></p>
+
+<p>For any layer l, r(l) is a vector of independent Bernoulli random variables each of which has probability p of being 1. This vector is sampled and multiplied element-wise to create a thin layer as input of next layer.</p>
+
+<p>(PS: Bernoulli is 1 if p, 0 if 1-p)</p>
+
+<h3 id="experiment">Experiment</h3>
+<p>Error rate greatly decreases when use dropout(from 1.6 -&gt; 1.35) by direct comparison on MNIST, but I do notice they tend to have a larger test-training ratio than what we normally train, like for MNIST it is 6:1 and for some dataset, it even has 1:1.</p>
+
+<p>It does increase the training time(around 2x to 3x), and the gradient being compute is not gradient for final architecture.</p>
+
+<h3 id="suggestions">Suggestions</h3>
+<p>Authors leave practical guide for training dropout network. A good dropout net should have <strong>n/p</strong> units, where n is number of layers and p is probability of retaining a unit.</p>
+
+<p>We should also use greater learning rate because gradient tend to cancel each other when dropout introduces a lot of noise.</p>
+
+<p>The dropout rate tend to in range of 0.5 to 0.8, typically 0.8.</p>
+:ET

@@ -1,0 +1,30 @@
+I"�<h2 id="reinforced-learning-continued">Reinforced Learning (Continued)</h2>
+
+<h4 id="policy-gradient">Policy gradient</h4>
+<p>Based on Graident Descent, it has four steps:</p>
+<ol>
+  <li>compute for each step the gradient that make chosen action more likely</li>
+  <li><em>after run several episodes</em> and compute action’s score</li>
+  <li>evaluate action score</li>
+  <li>compute all resulting gradient vectors (using normalized mean) and use GD</li>
+</ol>
+
+<h3 id="markov-decision-process">Markov Decision Process</h3>
+<p>It is a twist to Markov chains: at each step, an agent can choose one of several possible actions, and the transition probabilities depend on the chosen action.</p>
+
+<h4 id="bellman-optimaity-equation">Bellman optimaity equation</h4>
+<blockquote>
+  <p>recursive equation says that if the agent acts optimally, then the optimal value of the current state is equal to the reward it will get on average after taking one optimal action, plus the expected optimal value of all possible next states that this action can
+lead to.</p>
+</blockquote>
+
+<p>V = sum(T * (R + yV(s’)))
+optimal state value: V
+T: trasition prob 
+R: reward</p>
+
+<p>state-action values(Q values) that evaluate Q(state, action)</p>
+
+<h3 id="temporal-difference-learning-td-algorithm">Temporal Difference learning (TD algorithm)</h3>
+<p>Because initially it does not know T, R, the agent takes a purely random policy to explore; then TD learning algorithm updates the estimates of state values</p>
+:ET

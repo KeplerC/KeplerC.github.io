@@ -1,0 +1,23 @@
+I"u<h1 id="qa">QA</h1>
+
+<h3 id="keywords">keywords</h3>
+<p>query： keywords that system should look at and search for</p>
+
+<h3 id="ir">IR</h3>
+<p>Anwser type classification: determine answer type. Word in a question can give extra information: question headword &amp; anwser type word.</p>
+
+<p>Query formulation: rephrase the question: rephrase the question that look like substring of declarative answers</p>
+
+<p>passage retrieval: extract potential answer of the passage 
+    passages are ranked based on named entities, keywords proximity</p>
+
+<p>answer processing: pattern extraction</p>
+
+<h3 id="knowledge-based-qa">Knowledge based QA</h3>
+<p>have a databased relations e.g. infoboxes that has structued tables associated with wiki’s articles</p>
+
+<p>The supervised approach can be extended to deal with more complex questions that are not just about single relations.
+argmax(lx:state(x) ^ borders(x;texas);lx:size(x))</p>
+
+<p>most methods make some use of web text, either via semi-supervised methods like distant supervision or unsupervised methods like <strong>open information extraction</strong>, both introduced in Chapter 20</p>
+:ET

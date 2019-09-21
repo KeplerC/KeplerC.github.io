@@ -1,0 +1,55 @@
+I"�<h1 id="generating-sequences-with-recurrent-neural-networks">Generating Sequences with Recurrent Neural Networks</h1>
+<p>by Alex Graves</p>
+
+<h3 id="interesting-explaination-of-neural-network">Interesting Explaination of Neural Network</h3>
+<p>RNNs are ‘fuzzy’ in the sense that they do not use exact templates from
+the training data to make predictions, but rather—like other neural network use their internal representation to perform a high-dimensional interpolation between training examples.</p>
+
+<h3 id="rnn">RNN</h3>
+<p>standard RNN is unable to store information about past inputs for very long, and it generates based on only a few previous inputs.</p>
+
+<hr />
+<p>o  o o o o o o o 
+ |  | | | | | | |
+ h \h \ h \ h \ h 
+ |  | | | | | | | 
+ i  i i i i i i i 
+<strong>__</strong><strong>__</strong><strong>__</strong><em>__</em></p>
+
+<p>h_t^n = H()
+H is hidden layer function</p>
+
+<h3 id="lstm">LSTM</h3>
+<p>In RNN, the hidden layer function is softmax function, but in LSTM, the whole cell is what we are familar with, which consists of forgetting gate, input, output and etc.</p>
+
+<h3 id="discrete">Discrete</h3>
+<p>Text Prediction</p>
+<ul>
+  <li>word level</li>
+  <li>character-level language modelling: predict one character at a time, sometimes invent novel words/strings and generate flexibility</li>
+</ul>
+
+<h4 id="penn-treebank">Penn Treebank</h4>
+<p>network architecture: 1000 LSTM units to compare word and character level of LSTM predictors on Penn corpus. Because the input texts are targets, the network can adapt its weights as it is being evaluated(which is called dynamic evaluation).</p>
+
+<p>Results: the word-level RNN performed better than the character-
+level network, but the gap appeared to close when regularisation is used.LSTM is better at rapidly adapting to new data than ordinary RNNs.</p>
+
+<h4 id="wikipedia-experiment">Wikipedia Experiment</h4>
+<p>Hutter Prize: to compress the first 100 million bytes of the complete English Wikipedia data (as it was at a certain time on March 3rd 2006) to as small a file as possible.</p>
+
+<h3 id="real-continuous">Real continuous</h3>
+
+<h4 id="handwriting-prediction">Handwriting Prediction</h4>
+<p>Online handwriting data: writing is recorded as a sequence of pen-tip locations. Dataset is from IAM-OnDB and original data is just x-y coordinates and end-of-stroke markes.</p>
+
+<p>Mixture density output: the sequence of probability distributions for the predicted pen locations as the word ‘under’ is written. By adding them together, we form a heatmap.</p>
+
+<h4 id="handwriting-synthesis">Handwriting Synthesis</h4>
+<p>It is to generate handwriting by given text. The main problem is two sequences have different length.</p>
+
+<h4 id="future">future</h4>
+
+<h3 id="thoughts">Thoughts</h3>
+<p>This paper is so fantastic that includes many interesting experiments. I cannot elaborate more on it because of the limitation of markdown(like including images and formula). Highly recommended!</p>
+:ET

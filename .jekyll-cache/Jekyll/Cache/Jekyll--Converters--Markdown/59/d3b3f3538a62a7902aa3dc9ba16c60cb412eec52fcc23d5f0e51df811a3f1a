@@ -1,0 +1,41 @@
+I"J<h1 id="survey-on-mining-subjective-data-on-theweb">Survey on Mining Subjective Data on theWeb</h1>
+<p>by Mikalai Tsytsarau · Themis Palpanas</p>
+
+<p>This is a review of Development of Sentiment analysis and opinion mining. It might be useful for extraction of logic.</p>
+
+<h3 id="subjectivity-analysis">Subjectivity Analysis</h3>
+<p>The whole subjectivity analysis can be composed into three components:</p>
+<ul>
+  <li>identify</li>
+  <li>classify</li>
+  <li>aggregate</li>
+</ul>
+
+<p>for opinion mining, it is the first two steps; opinion aggreation is post-processing step. 
+idenity: opinionative and non-opinionative phrases 
+classification: distinguish postive/negative texts 
+    problem: neutral &amp; irrelevant categories</p>
+
+<h4 id="machine-learning">Machine learning:</h4>
+<p>1) learn the model from a corpus of training data (supervised, unsupervised),
+2) classify the unseen data based on the trained model.
+SVM is useful Pang and Lee(2002)</p>
+
+<h4 id="dictionary-approach">Dictionary approach:</h4>
+<p>pre-build dictionary that contains opinion of words 
+\frac{weight * modifier}{weight}
+words can change polarity when in different context</p>
+
+<h4 id="statistical-approach">Statistical approach:</h4>
+<p>Point-wise Mutual Information (PMI):replacing probability values with the frequencies of term occurrence F(x) and co-occurrence F(x near y):
+PMI = log_2 F(x near y) / F(x)F(y)</p>
+
+<p>and use sentiment polarity to calculate difference between PMI values against two opposing lists of words</p>
+
+<h4 id="semantic-approach">Semantic Approach:</h4>
+<p>Wordnet 
+Similar to statistical methods, two sets of seed words with positive and negative sentiments are used as a starting point for bootstrapping the construction of a dictionary.</p>
+
+<h3 id="opinion-aggregation">Opinion Aggregation</h3>
+<p>The key is feature extraction and aggregation.</p>
+:ET

@@ -1,0 +1,94 @@
+I"z<h1 id="notes-from-beginningi">Notes From Beginning(I)</h1>
+<h2 id="introduction">Introduction</h2>
+
+<h4 id="supervised-learning-and-unsupervised-learning">Supervised Learning and Unsupervised Learning</h4>
+<ul>
+  <li>Supervised Learning: know what results should look like</li>
+  <li>Unsupervised Learning: have no idea</li>
+</ul>
+
+<h4 id="classification-and-regression">Classification and Regression</h4>
+<ul>
+  <li>Regression: predict results within a <strong>continuous</strong> output</li>
+  <li>Classification: predict in <strong>discrete</strong> output</li>
+</ul>
+
+<h4 id="model-representation">Model Representation</h4>
+<p>Training set is represented by (x^i, y^i) where i \in [1,m] and m is the number of training examples.</p>
+
+<h4 id="cost-function">Cost Function</h4>
+<p>The cost function is an average difference of all the results of the hypothesis with inputs from x’s with actual output of y’s.</p>
+
+<h4 id="multiple-features">Multiple Features</h4>
+<p>x^i_j the value of feature j in the ith training example 
+where hypothesis is 
+h_theta(x) = \theta_0 + \theta_1 x_1 … +\theta_n x_n
+or written as matrix multiplication form</p>
+
+<h4 id="overfitting">Overfitting</h4>
+<p>adding extra features might be overfitting, while adding little will be underfitting.</p>
+
+<h5 id="solution">Solution</h5>
+<ul>
+  <li>Reducing number of features</li>
+  <li>Regularization
+    <ul>
+      <li>keep all feature but reduce magnitude</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="gradient-descent">Gradient Descent</h2>
+<p>To estimate parameters of hypothesis function, we can use Gradient Descent. For two-dimensional case, points on the same contour on the contour map will have same loss cost. Thus, finding the equation with smallest loss cost is the same as finding the minimum value on the contour map.</p>
+
+<p>One assumption for this algorithm is that depending on where one starts on the graph, one could end up at different points. We start from some \theta_0, \theta_1 and iteratively repeat j=0 and j=1 until convergence</p>
+
+<p>\theta_j \leftarrow \theta_j - \alpha \pd J(\theta_0, \theta_1)</p>
+
+<p>to find the minimum J(\theta_0, \theta_1) where \alpha represents learning rate(step taken) and we calculate partial derivatives by h_theta - y^i</p>
+
+<h4 id="intuition">Intuition</h4>
+<p>\theta_1 \leftarrow \theta_1 - \alpha \pd J(\theta_1)</p>
+<ul>
+  <li>positive slope: \pd is positive, then minus number to make \theta_1 go backward</li>
+  <li>vise versa</li>
+</ul>
+
+<p>if \alpha is small, then gradient descent is slow;
+if \alpha is too large, it may overshoot the minimum and fail to converge
+if the derivative is approaching minimum, the pd is small thus the step taken is also small</p>
+
+<h4 id="batch-gradient-descent">Batch Gradient Descent</h4>
+<blockquote>
+  <p>Each step of gradient descent uses all the training examples.</p>
+</blockquote>
+
+<h3 id="gradient-descent-for-multiple-variables">Gradient Descent for Multiple Variables</h3>
+<p>Repeat Gradient Descent equation for n features.</p>
+
+<p>Because all the parameters \theta will descent more quickly on small ranges(they are all based on a ratio), we can keep them in a range. Also, there are two techniques:</p>
+
+<h4 id="feature-scaling">Feature Scaling</h4>
+<p>dividing the input values by the range(max-min) thus resulting the new range in 1.</p>
+<h4 id="mean-normalization">Mean Normalization</h4>
+<p>subtracting the average value</p>
+
+<p>These are very common in statistics.</p>
+
+<h4 id="polynomial-regression">Polynomial Regression</h4>
+<p>We can combine the features by adding another feature to be quadratic, cubic or square root. Just need to keep in mind the range will be amplified for high order equations.</p>
+
+<h3 id="normal-equation">Normal Equation</h3>
+<p>Another way of minimizing cost function J is by normal equation. By this way, we do not need to iterate or do feature scaling. 
+The equation is</p>
+
+<p>\theta = (X^T X)^{-1} X^T y
+The complexity of Normal Equation is O(n^3), due to the need for inverse the matrix, while the iterative method is O(kn^2)</p>
+
+<h4 id="noninvertibility">Noninvertibility</h4>
+<p>Common issue for nonivertible is</p>
+<ul>
+  <li>Redundant features</li>
+  <li>too many features</li>
+</ul>
+:ET

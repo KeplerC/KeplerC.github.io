@@ -1,0 +1,47 @@
+I"O
+<h1 id="skip-gram-modelling">Skip-Gram Modelling</h1>
+
+<h5 id="the-paper-below-is-a-closer-look-at-skip-gram-modelling-by-guthrie-et-al">The paper below is A Closer Look at Skip-gram Modelling by Guthrie et al.</h5>
+
+<p>First of all, beyond n-grams. In addition to n-grams, it allows tokens to be skipped.</p>
+
+<h3 id="definition-of-k-skip-n-gram">Definition of k-skip-n-gram</h3>
+<p>we define k-skip-n-gram for a sentence w_1 … w_m to be the set 
+{w_i_1, w_i_2, … w_i_n | \sum_{j=1}^n i_j - i_{j-1} &lt; k}</p>
+
+<p>In English, it is that for a certain skil distance k allow a total k or less skips to construct the n gram. For example, 12345 can be constructed for 2-skip-bi-gram to be {12, 13, 23, 24, 34, … }</p>
+
+<h5 id="the-paper-below-is-word2vec-parameter-learning-explained-by-xin-rong">The paper below is word2vec Parameter Learning Explained by Xin Rong</h5>
+
+<h3 id="continuous-bag-of-word-model">Continuous bag-of-word model</h3>
+<h4 id="one-word-context">One word context</h4>
+<p>This is the simplest continuous bag os word that consider one word per context, then we will predict target word by a given context word. 
+The we have a one-hot encoded vector, going through NN and have (simply copying the kth row).</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>The objective is to maximize the conditional probability of observing the actual output word given the input context by max p(word output</td>
+      <td>word input)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="multi-word-context">Multi-word context</h4>
+<p>When we have multiple words, then what we see is 
+max p(word output | word<strong>s</strong> input)
+and the output weight function is basically the same.</p>
+
+<h3 id="skip-gram-model">Skip-Gram model</h3>
+<p>opposite to continuous bag of words, when input layer is target word, and context is output layer. Instead of outputing one multinomial distribution, we are outpuing multinomial distributions. Each output is computed using the same hidden→output matrix. Then the loss function is still softmax.</p>
+
+<h3 id="optimizations">Optimizations</h3>
+<h4 id="hierarchical-softmax">Hierarchical softmax</h4>
+<p>It uses binary tree to represent all words in the vocabularies. Then it doesn’t use vector representaiton of the words but use huffman tree to encode everything.</p>
+
+<p>To go through the tree, we have a random walk on 
+p(n, left) = softmax(v^T, h)</p>
+
+<h4 id="negative-sampling">Negative Sampling</h4>
+<p>To deal with difficulty that we have too many vectors to update per iteration, we do a negative sampling that (besides updating output word)have sample a few words as negative samples.</p>
+:ET

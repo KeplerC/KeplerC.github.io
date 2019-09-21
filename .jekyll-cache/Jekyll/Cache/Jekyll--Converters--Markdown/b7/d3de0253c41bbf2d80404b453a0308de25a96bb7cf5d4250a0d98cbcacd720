@@ -1,0 +1,16 @@
+I"	<h1 id="deep-learning">Deep Learning</h1>
+<h2 id="week-1">Week 1:</h2>
+<p>Rectified linear unit: RELU 
+from a set of input parameters, going through RELUs(neurons) then we get an output y</p>
+
+<p>applications in supervised learning: from an input to an output</p>
+<ul>
+  <li>standard nn: real estate, online ad</li>
+  <li>CNN: photo tagging, autonomous driving</li>
+  <li>speech recognition, machine translation: rnn</li>
+</ul>
+
+<p>structured data: features are labelled</p>
+
+<p>detailed implementation see ipy notes</p>
+:ET

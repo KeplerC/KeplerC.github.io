@@ -1,0 +1,53 @@
+I"<h2 id="ch11-training-deep-neural-nets">CH11 Training Deep Neural Nets</h2>
+<p>a complex layered NN have the following problems</p>
+<ul>
+  <li>vanishing gradient problem</li>
+  <li>training extremely slow</li>
+  <li>overfitting because a lot of parameters</li>
+</ul>
+
+<h3 id="vanishing-gradient">Vanishing gradient</h3>
+<p>Gradients often get smaller and smaller as the algorithm progresses down to the lower layers. Because variance of the output of each layer is greater than variance of input, if going forward, the variance keep increasing until activation function saturates at the top layers.</p>
+
+<p>As a result, if the function saturates at 0/1, derivative is close to 0 for sigmoid, then backpropagation nearly = 0</p>
+
+<h4 id="initialization">Initialization</h4>
+<blockquote>
+  <p>we need the variance of the outputs of each layer to be equal to the variance of its inputs,2 and we also need the gradients to have equal variance before and after flowing through a layer in the reverse direction</p>
+</blockquote>
+
+<p>Xavier initialization 
+Normal distribution with 0 and std dev</p>
+
+<p>the usage of fully connected can do this by default</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">he_init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">variance_scaling_initializer</span><span class="p">()</span>
+<span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">weights_initializer</span><span class="o">=</span><span class="n">he_init</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">"h1"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="non-saturating-activation-function">Non-saturating Activation function</h4>
+<p>ReLU has a problem: dead ReLU that always output 0
+so use a leaky RELU or ELU(exponential linear unit) activation function</p>
+
+<h4 id="batch-normalization">Batch normalization</h4>
+<p>To guarantee vanishing/exploding gradient do not come back, we have batch normalization. We can do BN by adding an operation in the model just before the activation function of each layer, simply zero-centering and normalizing the inputs, then scaling and shifting the result using two new parameters per layer</p>
+
+<p>This is to solve a problem that distribution of each layer’s inputs change in training, and parameter will also change
+//I want to call it for today because I am having my history final paper</p>
+
+<p>We can call it by</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.contrib.layers</span> <span class="kn">import</span> <span class="n">batch_norm</span>
+<span class="n">n_inputs</span> <span class="o">=</span> <span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span>
+<span class="n">n_hidden1</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">n_hidden2</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">n_outputs</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">n_inputs</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">"X"</span><span class="p">)</span>
+<span class="n">is_training</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="nb">bool</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">'is_training'</span><span class="p">)</span>
+<span class="n">bn_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'is_training'</span><span class="p">:</span> <span class="n">is_training</span><span class="p">,</span>
+    <span class="s">'decay'</span><span class="p">:</span> <span class="mf">0.99</span><span class="p">,</span>
+    <span class="s">'updates_collections'</span><span class="p">:</span> <span class="bp">None</span>
+<span class="p">}</span>
+<span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">"hidden1"</span><span class="p">,</span> <span class="n">normalizer_fn</span><span class="o">=</span><span class="n">batch_norm</span><span class="p">,</span> <span class="n">normalizer_params</span><span class="o">=</span><span class="n">bn_params</span><span class="p">)</span>
+</code></pre></div></div>
+:ET

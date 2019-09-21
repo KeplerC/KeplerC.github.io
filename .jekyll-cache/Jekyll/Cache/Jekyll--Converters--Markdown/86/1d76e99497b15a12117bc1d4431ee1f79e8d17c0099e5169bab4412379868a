@@ -1,0 +1,24 @@
+I"<p>By 
+ICDE 17<br />
+	https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=7929986 \</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>combine performance metrics to better capture underperforming sectors in mobile networks
+	○ previous methods are combinations of threshold to determine/rank underperformed sector
+		§ bridge sector KPI to reflect per-consumer QoE
+		§ hotspot score: a combincation of thresholded kpis
+	○ optimzation of correlation(score, ground truth) by PSO
+		§ not differentiable 
+		§ particle swarm optimization
+			demonstrated below:(source wikipedia)
+		§ regression:
+			□ linear/nonlinear regression methods
+			□  random forest regression
+	○ dataset
+		§ weblog/video
+		§ ground truth: video loaded in Youtube
+		§ better spearman correlation of the score between delay, throughput and stalls 
+QoE-aware Optimization of Video Stream Downlink Scheduling over LTE 
+</code></pre></div></div>
+
+<p><img src="./img/psa.gif" alt="./img/psa.gif" /></p>
+:ET

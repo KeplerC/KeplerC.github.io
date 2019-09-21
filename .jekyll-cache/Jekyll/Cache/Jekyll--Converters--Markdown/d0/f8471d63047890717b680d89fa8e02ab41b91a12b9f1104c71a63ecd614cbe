@@ -1,0 +1,189 @@
+I"'S<h1 id="mri-skull-stripping-baseline-models">MRI Skull Stripping Baseline Models</h1>
+<p>This jupyter notebook includes all the experiments performed on a baseline models including linear models like random forest, decision tree and etc.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#import everything
+</span><span class="kn">import</span> <span class="nn">pydicom</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+</code></pre></div></div>
+
+<h3 id="this-is-a-regular-image-that-needs-to-strip-the-skull">This is a regular image that needs to strip the skull</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#a regular image file should look like this
+</span><span class="kn">from</span> <span class="nn">scipy.misc</span> <span class="kn">import</span> <span class="n">toimage</span>
+<span class="n">train_file</span> <span class="o">=</span> <span class="s">"./data/IM-1081-0017.dcm"</span>
+<span class="n">ground_truth_file</span> <span class="o">=</span> <span class="s">"./data/BM-1081-0017.dcm"</span>
+<span class="n">input_file</span> <span class="o">=</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">train_file</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">pixel_array</span><span class="p">)</span>
+<span class="n">toimage</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\KeplerC\Anaconda3\lib\site-packages\sklearn\utils\validation.py:475: DataConversionWarning: Data with input dtype uint16 was converted to float64 by the scale function.
+  warnings.warn(msg, DataConversionWarning)
+C:\Users\KeplerC\AppData\Roaming\Python\Python36\site-packages\ipykernel_launcher.py:7: DeprecationWarning: `toimage` is deprecated!
+`toimage` is deprecated in SciPy 1.0.0, and will be removed in 1.2.0.
+Use Pillow's ``Image.fromarray`` directly instead.
+  import sys
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/KeplerC/keplerc.github.io/master/_posts/output_3_1.png" alt="png" /></p>
+
+<h3 id="a-ground-truth-file-as-a-bitmap">A ground truth file as a bitmap</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#loading a sample ground truth file
+</span><span class="n">ground_truth</span> <span class="o">=</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">ground_truth_file</span><span class="p">)</span>
+<span class="n">gt</span> <span class="o">=</span> <span class="n">ground_truth</span><span class="o">.</span><span class="n">pixel_array</span>
+<span class="n">toimage</span><span class="p">(</span><span class="n">gt</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\KeplerC\AppData\Roaming\Python\Python36\site-packages\ipykernel_launcher.py:4: DeprecationWarning: `toimage` is deprecated!
+`toimage` is deprecated in SciPy 1.0.0, and will be removed in 1.2.0.
+Use Pillow's ``Image.fromarray`` directly instead.
+  after removing the cwd from sys.path.
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/KeplerC/keplerc.github.io/master/_posts/output_5_1.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Hyperparameters 
+</span><span class="n">m</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1">#the size of local patch
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># a function that prepares training data for a single image
+# it takes into acccount 
+</span><span class="k">def</span> <span class="nf">prepare_training_data_for_an_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">gt</span><span class="p">):</span>
+    <span class="n">training_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">training_label</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">#prepare training
+</span>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">):</span>
+            <span class="c1">#feature selection: 
+</span>            <span class="c1"># *color
+</span>            <span class="c1"># *px
+</span>            <span class="c1"># *py
+</span>            <span class="n">training_data_for_pixel</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> 
+            <span class="c1"># patch
+</span>            <span class="k">for</span> <span class="n">px</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">m</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">py</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">training_data_for_pixel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="n">px</span><span class="p">][</span><span class="n">py</span><span class="p">])</span>
+            <span class="n">training_label</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">gt</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">training_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">training_data_for_pixel</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">training_data</span><span class="p">,</span> <span class="n">training_label</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span> 
+
+<span class="c1">#loading the rest images in data folder
+</span><span class="n">training_data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">training_label</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span> 
+
+<span class="c1">#iterate through all files 
+</span><span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">"./data/"</span><span class="p">):</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"IM"</span><span class="p">)):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">counter</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="k">continue</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">continue</span>
+    
+    <span class="c1">#for each file, read in pixel and ground truth 
+</span>    <span class="n">input_file</span> <span class="o">=</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s">"./data/"</span> <span class="o">+</span> <span class="n">path</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">pixel_array</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">"B"</span> <span class="o">+</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">ground_truth</span> <span class="o">=</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s">"./data/"</span> <span class="o">+</span> <span class="n">path</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">gt</span> <span class="o">=</span> <span class="n">ground_truth</span><span class="o">.</span><span class="n">pixel_array</span>
+    
+    <span class="n">d</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">prepare_training_data_for_an_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">gt</span><span class="p">)</span>
+    <span class="n">training_data</span> <span class="o">+=</span> <span class="n">d</span>
+    <span class="n">training_label</span> <span class="o">+=</span> <span class="n">l</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\KeplerC\Anaconda3\lib\site-packages\sklearn\utils\validation.py:475: DataConversionWarning: Data with input dtype uint16 was converted to float64 by the scale function.
+  warnings.warn(msg, DataConversionWarning)
+
+
+BM-1081-0017.dcm
+BM-1081-0018.dcm
+BM-1081-0019.dcm
+BM-2607-0019.dcm
+BM-26936-0017.dcm
+BM-6175-0017.dcm
+BM-6938-0017.dcm
+BM-6938-0018.dcm
+BM-7903-0017.dcm
+BM-7903-0019.dcm
+BM-8941-0014.dcm
+BM-8941-0016.dcm
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="n">my_classifier</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">my_classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="n">training_label</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=None, max_features='auto', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,
+            oob_score=False, random_state=None, verbose=0,
+            warm_start=False)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pred</span> <span class="o">=</span> <span class="n">my_classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+<span class="n">accuracy_score</span><span class="p">(</span><span class="n">training_label</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.9964570063694268
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#prediction
+</span><span class="n">image</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">pixel_array</span><span class="p">)</span>
+<span class="n">stripped_image</span> <span class="o">=</span> <span class="n">image</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">stripped_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">stripped_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">px</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">m</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">py</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stripped_image</span><span class="p">[</span><span class="n">px</span><span class="p">][</span><span class="n">py</span><span class="p">])</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">my_classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+
+<span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">stripped_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">stripped_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">stripped_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">stripped_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">stripped_image</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">gt</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span>  <span class="mi">1</span><span class="p">):</span>
+                <span class="n">stripped_image</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1">#if pred[counter] == 0:
+</span>            <span class="c1">#    stripped_image[x][y] = 0 
+</span>            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\KeplerC\Anaconda3\lib\site-packages\sklearn\utils\validation.py:475: DataConversionWarning: Data with input dtype uint16 was converted to float64 by the scale function.
+  warnings.warn(msg, DataConversionWarning)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">toimage</span><span class="p">(</span><span class="n">stripped_image</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Users\KeplerC\AppData\Roaming\Python\Python36\site-packages\ipykernel_launcher.py:1: DeprecationWarning: `toimage` is deprecated!
+`toimage` is deprecated in SciPy 1.0.0, and will be removed in 1.2.0.
+Use Pillow's ``Image.fromarray`` directly instead.
+  """Entry point for launching an IPython kernel.
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/KeplerC/keplerc.github.io/master/_posts/output_12_1.png" alt="png" /></p>
+
+:ET

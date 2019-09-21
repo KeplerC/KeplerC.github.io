@@ -1,0 +1,82 @@
+I"L<h3 id="large-scale-machine-learning">Large scale machine learning</h3>
+
+<p>Larger training set will have better results, which can be shown from learning curve.</p>
+
+<p>Problem with gradient descent: 
+    for every iteration, it has to sum up 10000000… numbers (batch gradient descent: iterate through the whole data set)</p>
+
+<h4 id="stochastic-gradient-descent">stochastic gradient descent</h4>
+<p>we do only cost on one hypothesis and calculate J by average
+randomly shuffle dataset(then the order will be fine)
+repeat{
+    for i=1…m{
+        theta_j = theta_j - alpha (h - y).x
+    }
+}
+General idea: we do first training example to fit first example a little bit better, and then the second example and make the second example a little better</p>
+
+<p>batch will go from one point the move to the center of level curve
+but stochastic will go zigzag; we decrease learning rate over time 
+to make it converge</p>
+
+<h5 id="convergence">convergence</h5>
+<p>we can plot e.g.1000 iterations and taking average
+(because another new example might be better or worse)</p>
+
+<h4 id="mini-batch-gradient-descent">mini-batch gradient descent</h4>
+<p>batch gradient descent: use m example every iteration
+stochastic: use 1 example every iteration 
+mini-batch: use b examples, where b is user-defined
+    vectorization can be more efficient than others</p>
+
+<h4 id="online-learning">Online Learning</h4>
+<p>Repeat forever{
+    get (x, y) online 
+    update theta using (x,y)
+}
+it can adapt the preference of users</p>
+
+<h4 id="map-reduce-and-data-parallelism">Map Reduce and data parallelism</h4>
+<p>split training set into different pieces and doing batch gradient descent separately and combine the results</p>
+
+<h3 id="ocr">OCR</h3>
+
+<p>Photo Character Recognition Pipeline</p>
+<ul>
+  <li>Text detection</li>
+  <li>character segmentation</li>
+  <li>character classification</li>
+</ul>
+
+<h4 id="sliding-window">Sliding window</h4>
+<p>taking a rectangular patch throughout the image
+need to define step size and then take larger/smaller image patch</p>
+
+<p>For text detection, 
+use a classifier to find where text has highest probability 
+then use expansion method to determine the sliding window of the image</p>
+
+<p>then we use a 1D sliding window to go through image patch to find gaps: character segmentation</p>
+
+<h4 id="application">Application</h4>
+<h5 id="artificial-data-synthesis">artificial data synthesis</h5>
+<p>we produce a letter in different background and have different picture as synthetic data</p>
+
+<h5 id="introducing-distortions">Introducing distortions</h5>
+<p>we can distort the training set to create more 
+another application is speech recognition, also have a lot of noisy background</p>
+
+<p>however, having same value again and again will result a same theta</p>
+
+<p>Discussion</p>
+<ul>
+  <li>make sure to have a low bias classifier</li>
+  <li>“how much work would it be to get 10x as much data as we currently have”</li>
+</ul>
+
+<h5 id="ceiling-analysis">ceiling analysis</h5>
+<p>the earlier the stage it is, the more influencial the stage is. 
+i.e.
+the ceiling the the next stage is determined by the previous stage</p>
+
+:ET

@@ -1,0 +1,72 @@
+I"L<h1 id="machine-learning-in-spam-filtering-i">Machine Learning in Spam Filtering (I)</h1>
+
+<p>I studied novelty detection for the last two months. Distinguishing  a novel pattern from many studied patterns can be a new step for me from one-class classification to general machine learning methods. I believe spam filter can be a good start. I will structure this blog by a review by Guzella and Caminhas[1].</p>
+
+<p>I ran into this problem when I worked on ClassUCLA project: its latter iterations can send email to predefined accounts. Because of the privacy issues, I decide not to release those versions. At first I chose to use STMP servers of my Yahoo and a few other large companies’ email account, but most of my emails were classified as spam email and failed to sent them.</p>
+
+<h2 id="the-reason-for-data-driven-spam-filtering">The reason for data-driven spam filtering</h2>
+<p>The old fashion way to do this is to filter certain keywords. For example, users can define keyword “stranger” such that all emails that have word stranger will be classified as spam email. However, spammers began to adopt content “obfuscation” to avoid these user defined filters, for example, using “sch001” instead of “school”.<br />
+The challenge faced by all spam filter is high cost of true-negative rate.</p>
+
+<h2 id="basic-technique">Basic Technique</h2>
+<p>For text-based spam filtering, it is more likely to do a text categorization or plagiarism detection. The following five steps are used to preprocess the information</p>
+<ol>
+  <li>tokenization: extract words</li>
+  <li>lemmatization: extract key words</li>
+  <li>stop-word removal: remove common words like “to”, “a”, “for”</li>
+  <li>representation: convert the remaining information into machine learning algorithm input</li>
+  <li>feature selection: selecting most representative features from previous steps</li>
+</ol>
+
+<h3 id="bag-of-wordsbow-representation">Bag of Words(BoW) representation</h3>
+<p>A vector is usually used to represent a text. This technique is usually called bag-of-words. Given a set of <em>priori</em> or predefined terms {t_1, t_2 … t_N}, information can be represented by a N-dimensional feature vector. The feature vector can be formed token  by</p>
+<ul>
+  <li>a sliding window through a sequence of characters</li>
+  <li>the number of occurrence of certain word, or n-gram model
+and the feature can be represented by</li>
+  <li>binary representation: if certain word exist</li>
+  <li>frequency representation: the number of occurrences of that feature</li>
+  <li>term frequency-inverse document frequency: a log-based indication based on documents.</li>
+</ul>
+
+<p>Then we extract features by, for example, calculating information gain. We can calculate a frequency score to each term and select terms with highest core. Then we evaluate the difference of term-frequency variance for this document and that for all documents in the training set. By extracting features, we can focus more on meaningful and important features.</p>
+
+<p>The problem for this algorithm is similar to many probabilistic approaches: it can be represented with minimal space and ran with minimal time, but its cannot be trained online. As a result, the model cannot learn new spam messages by itself.</p>
+
+<h2 id="naïve-bayes">Naïve Bayes</h2>
+<p>Algorithms in this category are all based on Bayesian framework, which P(c|x)P(x) = P(x|c)P(c). P(x|c) is that when message belongs to c is known, the probability that x is in that message. P(x) is a <em>priori</em> probability of a message by x. 
+The P(c), P(x|c), P(c|x) are computable by multiplying all components together by product rule or total probability rule.</p>
+
+<h3 id="sahami-et-al-and-graham">Sahami et al. and Graham</h3>
+<p>Both of these two algorithms are abased on 
+Sahami et al. generate a feature vector based occurrence of selected feature, while Graham select N words that have maximum probabilities. 
+However, both of them can be considered as Naive Bayes because they are just calculating possibilities.</p>
+
+<h3 id="other-bayesian-practices">Other Bayesian Practices</h3>
+<p>Just for the sake of convenience, this section will go through some of works mentioned by Guzella and Caminhas. I will keep my further updates in similar algorithms that I found or I think of to other dates or other blogs.</p>
+
+<ul>
+  <li>Interpolated Language Model: Medlock(2006): it considers subject and body of the email. The classification relies on
+    <blockquote>
+      <p>This classification of a message relies on aggregating a static(the entire training data) and a dynamic(periodically re-training with new data) component.</p>
+    </blockquote>
+  </li>
+  <li>Uncertainty Sampling:Segal et al.(2006): it is not quite based on Sahami et al.’s usage of Bayesian Framework. It is a iterative classifier
+    <blockquote>
+      <p>that outputs the confidence in the classification of all messages and request true labels of some of the messages that have the smallest confidence</p>
+    </blockquote>
+  </li>
+  <li>Dynamic Personalization: Segal(2007): it considers a heterogeneous setting for every users and takes into account for a global filter and a personal filter.</li>
+</ul>
+
+<h2 id="references">References</h2>
+<p>Guzella, Thiago S., and Walmir M. Caminhas. “A Review of Machine Learning Approaches to Spam Filtering.” <em>Expert Systems with Applications</em>, vol. 36, no. 7, 2009, pp. 10206–10222., doi:10.1016/j.eswa.2009.02.037.</p>
+
+<h2 id="notes-and-take-away">Notes and Take away</h2>
+<p>This is just a start for me. I will update what I read, what I think and this will be what I write. Because I am just a beginner and I will limited to my schedule, deadlines and potential unseen events, stopping to update is the least thing I want. Thus I sometimes divide things up and keep updating.</p>
+
+<h2 id="a-list-for-latter-researches">A list for latter researches</h2>
+<p>ANN
+Bayesian</p>
+
+:ET

@@ -1,0 +1,43 @@
+I"�<h1 id="semi-supervised-learningii-graph">Semi-supervised Learning(II): Graph</h1>
+
+<h3 id="continuedweight-matrix-and-graph">Continued(Weight Matrix and Graph)</h3>
+
+<p>At initial condition, the nodes <strong>carry a label that denotes the community they belong to</strong>. Membership in a <strong>community changes</strong> based on the labels that the <strong>neighboring nodes possess</strong>. This change is subject to the maximum number of labels within one degree of the nodes. Every node is initialized with a unique label, then the labels diffuse through the network. Consequently, densely connected groups reach a common label quickly. When many such <strong>dense</strong> (consensus) groups are created throughout the network, they continue to expand outwards until it is impossible to do so.</p>
+
+<h4 id="example-from-1-mnist">Example from [1]: MNIST</h4>
+
+<p>First thing to note is that Euclidean distance is a good measure of similarity of graphs in this case. Adjacent pairs are similar to each other: if they are not directly connected, label can still propagate to there.</p>
+
+<ul>
+  <li>additional introduction about [1]: it connects Gaussian process/Gaussian Random Field to label propagation.</li>
+</ul>
+
+<h4 id="graph-format">Graph Format</h4>
+
+<ul>
+  <li>fully connected graph</li>
+  <li>sparse graph: connection between dissimilar nodes are removed; weight learning makes optimization awkward</li>
+  <li>e-NN graph: a ball with radius e
+    <ul>
+      <li>parametric and sensitive to e selected</li>
+      <li>may have disconnected components</li>
+    </ul>
+  </li>
+  <li>k-NN graph: “adaptive scales”
+    <ul>
+      <li>not scalable</li>
+      <li>graph is not regular(as results may be asymmetric and irregular)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="community">Community</h3>
+
+<p>A community in a network is a group of nodes that are similar to each other and dissimilar from the rest of the network. Community detection, which is similar to network partition is NP complete.</p>
+
+<h3 id="references">References</h3>
+
+<p>A good thesis that describes everything in ssl: http://pages.cs.wisc.edu/~jerryzhu/pub/thesis.pdf</p>
+
+<p>A good survey about recent works http://pages.cs.wisc.edu/~jerryzhu/pub/ssl_survey.pdf</p>
+:ET

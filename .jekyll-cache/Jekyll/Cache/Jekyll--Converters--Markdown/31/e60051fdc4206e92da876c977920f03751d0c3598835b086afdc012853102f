@@ -1,0 +1,51 @@
+I"<h1 id="rnnchapter-12">RNN(Chapter 12)</h1>
+<p>Simplest model: RNN is just a neuron that receiving input, producing output and sending to itself, just like a series of feed foward neural network after unrolling</p>
+
+<p>At time step t, every neuron recies both the** input vector x and the output of previous time stpe y_{t-1}**. Thus it has some sort of memory. It is useful predicting time series or a sequence of input/output.</p>
+
+<ul>
+  <li>encoder: sequence to vector network</li>
+  <li>decoder: vector to sequence network</li>
+</ul>
+
+<h3 id="a-small-implementation">a small implementation</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Y0</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">Wx</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">Y1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Y0</span><span class="p">,</span> <span class="n">Wy</span><span class="p">)</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">Wx</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="static-unrolling">Static unrolling</h4>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="n">n_inputs</span><span class="p">])</span>
+<span class="n">basic_cell</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">rnn</span><span class="o">.</span><span class="n">BasicRNNCell</span><span class="p">(</span><span class="n">num_units</span><span class="o">=</span><span class="n">n_neurons</span><span class="p">)</span>
+<span class="n">output_seqs</span><span class="p">,</span> <span class="n">states</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">rnn</span><span class="o">.</span><span class="n">static_rnn</span><span class="p">(</span>
+<span class="n">basic_cell</span><span class="p">,</span> <span class="p">[</span><span class="n">X0</span><span class="p">,</span> <span class="n">X1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="c1"># More steps 
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">n_inputs</span><span class="p">])</span>
+<span class="n">X_seqs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span> <span class="c1"># put n_steps to the front 
+</span><span class="n">outputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">output_seqs</span><span class="p">),</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="c1"># turn it back
+</span></code></pre></div></div>
+<p>Y      Y
+ |      |<br />
+[ ] -&gt; [ ]
+ |  &lt;-  |
+ X      X
+ t1 -&gt;  t2</p>
+
+<h4 id="dynamic-unrolling">Dynamic unrolling</h4>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">outputs</span><span class="p">,</span> <span class="n">states</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dynamic_rnn</span><span class="p">(</span><span class="n">basic_cell</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</code></pre></div></div>
+<p>instead of having a specific n_steps, we have a while loop to go through enought times</p>
+
+<h3 id="training">Training</h3>
+<p>We simply unroll it through time and use regular backpropagation</p>
+
+<h2 id="lstm-cell">LSTM Cell</h2>
+<p>“don’t look inside the box”: it just a regular cell</p>
+<blockquote>
+  <p>it first goes through a
+forget gate, dropping some memories, and then it adds some new memories via the addition operation (which adds the memories that were selected by an input gate). The result c(t) is sent straight out, without any further transformation.
+after the addition operation, the long-term state is copied and passed through the tanh function, and then the result is filtered by the output gate.</p>
+</blockquote>
+
+<h4 id="nlp">NLP</h4>
+<p><strong>word embeddings</strong></p>
+:ET

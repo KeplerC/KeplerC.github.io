@@ -1,0 +1,48 @@
+I"¥<h2 id="week-3-neural-network-basics">Week 3: Neural Network basics</h2>
+<p>Neural network is represented by two parts of computation,
+the first is a linear function that weight*x + bias 
+the rest is activation function</p>
+
+<p>-</p>
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>(linear func</td>
+          <td>sigmoid ) -&gt; activation</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li></li>
+</ul>
+
+<p>notations
+z[1] = W[1]x + b[1]
+a[1] = sigmoid(z[1])
+z[2] = W[2]a[1] + b[2]</p>
+
+<p>z[1](1) = w[1] x(1) + b[1]</p>
+
+<p>w[1] x(1) is a column vector</p>
+
+<h3 id="activation-function--a--gz">activation function:  a = g(z)</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sigmoid function: binary classification 
+tanh: a shifted version of sigmoid function that centers at 0  
+    but sigmoid function is for output layer 
+    the problem: derivative is close to 0 for gradient descent 
+ReLU max(0, z): slope is always no 0, good for gradient descent
+leaky ReLU
+</code></pre></div></div>
+
+<h3 id="random-initialization">Random Initialization</h3>
+<p>if initialize everything to 0
+a[1] and a[2] will be equal
+then by backpropagation, both hidden units have same contribution and calculate exactly same function 
+and everything is symmetric</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">((,))</span>
+</code></pre></div></div>
+<p>will generate Gaussian random 
+if value is too large, it will enter gradient is small for sigmoid</p>
+:ET

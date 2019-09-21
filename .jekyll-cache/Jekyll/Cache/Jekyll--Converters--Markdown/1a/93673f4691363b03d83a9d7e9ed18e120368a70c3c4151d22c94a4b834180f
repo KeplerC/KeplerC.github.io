@@ -1,0 +1,107 @@
+I"�<h1 id="notes-from-beginningiv">Notes From Beginning(IV)</h1>
+<h2 id="applying-machine-learning-algorithm">Applying Machine Learning Algorithm</h2>
+<p>There are a few practical approaches to</p>
+<ul>
+  <li>Getting more training examples: Fixes high variance</li>
+  <li>Trying smaller sets of features: Fixes high variance</li>
+  <li>Adding features: Fixes high bias</li>
+  <li>Adding polynomial features: Fixes high bias</li>
+  <li>Decreasing λ: Fixes high bias</li>
+  <li>Increasing λ: Fixes high variance.</li>
+</ul>
+
+<h3 id="evaluating-a-hypothesis">Evaluating a hypothesis</h3>
+<p>We can divide data into a training set and a test set and a <strong>cross validation set</strong>.
+The procedure is:</p>
+<ol>
+  <li>Learn \Theta and minimize J_{train} (Theta)</li>
+  <li>Compute the test set error J_{test}(Theta)
+The cross validation set is to avoid overfit.</li>
+</ol>
+
+<h3 id="bias-and-variance">Bias and Variance</h3>
+<ul>
+  <li>The training error will decrease as we increase the degree of polynomial</li>
+  <li>high bias is underfitting both J_{train} and J_{CV} will be high, and J is similar</li>
+  <li>high variance is overfitting. J_{train} will be low and J_{CV} is much higher</li>
+</ul>
+
+<p>Diagnosing Neural Networks</p>
+<ul>
+  <li>A neural network with fewer parameters is prone to underfitting. It is also computationally cheaper.</li>
+  <li>A large neural network with more parameters is prone to overfitting. It is also computationally expensive. In this case you can use regularization (increase λ) to address the overfitting.
+Using a single hidden layer is a good starting default. You can train your neural network on a number of hidden layers using your cross validation set. You can then select the one that performs best. 
+Model Complexity Effects:</li>
+  <li>Lower-order polynomials (low model complexity) have high bias and low variance. In this case, the model fits poorly consistently.</li>
+  <li>Higher-order polynomials (high model complexity) fit the training data extremely well and the test data extremely poorly. These have low bias on the training data, but very high variance.</li>
+  <li>In reality, we would want to choose a model somewhere in between, that can generalize well but also fits the data reasonably well.</li>
+</ul>
+
+<h3 id="machine-learning-system-design">Machine Learning System Design</h3>
+<p>To strategize to design a system, we need to choose features of the email(e.g. a vector of words)</p>
+<ol>
+  <li>start a simple algorithm</li>
+  <li>plot learning curve to see more data/feature</li>
+  <li>error analysis</li>
+</ol>
+
+<h4 id="error-analysis">Error Analysis</h4>
+<p>Consider what type of training set, then how to add features to classify them correctly
+Also, we need numerical evaluation metric(like cross validation error) to determine the algorithm’s performance</p>
+
+<ul>
+  <li>skewed classes: we have a lot more examples from one class than the other
+    <ul>
+      <li>for example: one have cancer’s chance is 0.05%, so just predict 0!</li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="precisionrecall">Precision/Recall</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th style="text-align: center">Actual Class True 1</th>
+      <th style="text-align: right">Actual Class False 0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Predicted Class 1</td>
+      <td style="text-align: center">True positive</td>
+      <td style="text-align: right">False Positive</td>
+    </tr>
+    <tr>
+      <td>Predicted Class 0</td>
+      <td style="text-align: center">False Negative</td>
+      <td style="text-align: right">True negative</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If the prediction is correct, then true
+If algorithm predicts positive, then positive</p>
+
+<blockquote>
+  <p>Precision = True positive / # predicted positive
+when we predict y = 1, how many actually have y = 1</p>
+
+  <p>Recall = True positive / # actual trues<br />
+how many have y=1 in all samples</p>
+</blockquote>
+
+<h5 id="trading-precision-and-recall">Trading precision and recall</h5>
+<p>We adjust threshold higher to reach high precision and lower recall. 
+For example, we want to tell patients they have cancer when they really do. Thus, we lift the threshold. 
+If we want to avoid false negatives, we need to get alarmed by setting a lower threshold, and have high recall &amp; low precision.</p>
+
+<p><strong>F score</strong>: 2 * RP/(R+P)</p>
+
+<h5 id="how-many-data-do-we-need">How many data do we need</h5>
+<p>large data rationale: assume feature has sufficient information to predict (if the feature is not enough, then the algorithm cannot get it)
+    then many parameters, many hidden units 
+    then J_train will be super small (low bias)
+very large training set: unlikely to overfit (lower variance)</p>
+:ET

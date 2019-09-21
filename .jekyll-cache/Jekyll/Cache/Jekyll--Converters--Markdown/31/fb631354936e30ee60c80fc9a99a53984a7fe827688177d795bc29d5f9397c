@@ -1,0 +1,29 @@
+I"<h1 id="multi-task-sequence-to-sequence-learning">Multi-task Sequence to Sequence Learning</h1>
+<p>By sequence to sequence model, we have three basic settings</p>
+<ul>
+  <li>one-to-many settings</li>
+  <li>many-to-one setting</li>
+  <li>many-to-many settings</li>
+</ul>
+
+<p>for multi-task learning.</p>
+
+<h3 id="one-to-may">one-to-may</h3>
+<p>have one encoder in common, such as translation and parsing
+and have multiple decoders</p>
+
+<p>for example, input is a sequence of English words, 
+a separate decoder can generate translation in German,tags in parsing and same sequence of English words.</p>
+
+<h3 id="many-to-one">many to one</h3>
+<p>only one decoder is shared, such as image captioning</p>
+
+<h3 id="many-to-many">Many-to-many</h3>
+<p>multiple input encoder &lt;=&gt; multiple output decoder</p>
+
+<h3 id="unsupervised">Unsupervised</h3>
+<p>autoencoder helps less in terms of perplexities but more on BLEU scores compared to skip-thought.</p>
+
+<h3 id="datasets">Datasets</h3>
+<p>all of them are on machine translations</p>
+:ET

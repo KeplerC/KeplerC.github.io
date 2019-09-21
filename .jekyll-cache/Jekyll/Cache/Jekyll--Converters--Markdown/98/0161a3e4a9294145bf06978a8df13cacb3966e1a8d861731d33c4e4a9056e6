@@ -1,0 +1,40 @@
+I"�<h1 id="machine-learning-x-intrusion-detection">Machine Learning x Intrusion Detection</h1>
+
+<h2 id="tsai-et-al-a-review-of-intrusion-detection">Tsai et al.: a review of intrusion detection</h2>
+<p>Tsai et al. reviews 55 works in intrusion detection and believes most of the current works belong to three types of classifiers: single, hybrid and ensemble.</p>
+<ul>
+  <li>Single classifier includes most of the classifiers that we usually encounter, like k-NN, SVM, SOM, ANN, Baye)sian Networks.</li>
+  <li>Hybrid classifier combines, integrate, cascade or preprocess multiple single classifiers to generate better accuracy.</li>
+  <li>Ensemble classifier: ensemble refers to the combination of multiple weak learning algorithm. A weak learner is a classifier that is slightly better than random guessing. Then we can get a strong learner by boosting
+    <blockquote>
+      <p>most boosting algorithms consist of iteratively learning weak classifiers with respect to a distribution and adding them to a final strong classifier. When they are added, they are typically weighted in some way that is usually related to the weak learners’ accuracy. After a weak learner is added, the data are reweighted: examples that are misclassified gain weight and examples that are classified correctly lose weight.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>Those graphs can be found on their original published paper. Here are a few key results that are worthwhile discussing:</p>
+<ul>
+  <li>SVM and k-NN are most popular for intrusion detection.
+    <ul>
+      <li>I think the importance of SVM is self-evident. SVM is the top two classifier, no slight difference between random forest(RF), as published in <a href="http://jmlr.org/papers/v15/delgado14a.html">Do we Need Hundreds of Classifiers to Solve Real World Classification Problems? Manuel Fernández-Delgado, Eva Cernadas, Senén Barro, Dinani Amorim</a> As a result, I will go deeper and deeper on SVM and this paper later.</li>
+      <li>On the other hand, why k-NN, a relatively computationally expensive parametric algorithm drew so much attention? I think the reason is that first, this is a paper published in 2007, such that a lot of good ANNs were not available; second, it is an instance based learning rather than a rule inductive learning algorithm.
+        <ul>
+          <li>Difference between Rule Inductive and Instance based algorithm
+            <ul>
+              <li>instance based learning performs explicit generalization and compares with <strong>instances</strong> in memory</li>
+              <li>Rule Generated is opposite to instance based algorithm. It is trained by regression(or other methods) and generates rules rather than instances to store the model.</li>
+            </ul>
+          </li>
+          <li>it is an on-line algorithm that does not require training stage and just searches in specified learning sets.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Integration is most popular in Hybrid classifiers.</li>
+</ul>
+
+<h2 id="references">References</h2>
+<p>Tsai, Chih-Fong, et al. “Intrusion Detection by Machine Learning: A Review.” <em>Expert Systems with Applications</em>, vol. 36, no. 10, 2009, pp. 11994–12000., doi:10.1016/j.eswa.2009.05.029.</p>
+
+<p>Sommer, Robin, and Vern Paxson. “Outside the Closed World: On Using Machine Learning for Network Intrusion Detection.” <em>2010 IEEE Symposium on Security and Privacy</em>, 2010, doi:10.1109/sp.2010.25.</p>
+:ET

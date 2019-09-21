@@ -1,0 +1,87 @@
+I":<h2 id="ch10-introduction-to-ann">CH10 Introduction to ANN</h2>
+
+<p>Perceptron: weighted sum of its inputs</p>
+
+<h4 id="hebbs-rule">Hebb’s rule</h4>
+<p>The connection btw two neurons grow stronger when a biological neuron triggers another</p>
+
+<p>In training, the weight of connection increase</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Perceptron</span>
+<span class="n">per_clf</span> <span class="o">=</span> <span class="n">Perceptron</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">per_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">per_clf</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]])</span>
+</code></pre></div></div>
+<p>Note that contrary to Logistic Regression classifiers, Perceptrons do not output a class probability; rather, they just make predictions based on a hard threshold</p>
+
+<h4 id="multi-layered-api">Multi-layered API</h4>
+<p>When ANN has two or more hidden layers, it is called deep neural network</p>
+
+<p>Book’s training backpropagation</p>
+<blockquote>
+  <p>for each training instance the backpropagation algorithm
+first makes a prediction (forward pass), measures the error, then goes through each layer in reverse to measure the error contribution from each connection (reverse pass), and finally slightly tweaks the connection weights to reduce the error (Gradient Descent step).</p>
+</blockquote>
+
+<p>In order to make Gradient Descent make some progress, activation: original step function is replaced by logical function</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#High level API
+</span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="n">feature_columns</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">learn</span><span class="o">.</span><span class="n">infer_real_valued_columns_from_input</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">dnn_clf</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">learn</span><span class="o">.</span><span class="n">DNNClassifier</span><span class="p">(</span><span class="n">hidden_units</span><span class="o">=</span><span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="n">feature_columns</span><span class="o">=</span><span class="n">feature_columns</span><span class="p">)</span>
+<span class="n">dnn_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">40000</span><span class="p">)</span>
+<span class="n">dnn_clf</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h5 id="construction-phase">Construction phase</h5>
+<p>for low level plain tensorflow, I write everything on the notebook, here are a few things worthwhile to highlight:</p>
+<ul>
+  <li>Shape
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n_inputs</span> <span class="o">=</span> <span class="mi">28</span><span class="o">*</span><span class="mi">28</span> <span class="c1"># MNIS
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">n_inputs</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">"X"</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">"y"</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>we make 28*28 features(for every pixel) to every feature, and each feature is considered to be a #</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">neuron_layer</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> <span class="c1">#give Tensorboad a better look
+</span>      <span class="n">n_inputs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span> <span class="c1">#input matrix shape 
+</span>      <span class="n">stddev</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n_inputs</span><span class="p">)</span> <span class="c1"># make weight a truncated guassian distribution, it will make matrix converge faster
+</span>      <span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">((</span><span class="n">n_inputs</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">),</span> <span class="n">stddev</span><span class="o">=</span><span class="n">stddev</span><span class="p">)</span>
+      <span class="n">W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"kernel"</span><span class="p">)</span> 
+      <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_neurons</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s">"bias"</span><span class="p">)</span> <span class="c1">#bias
+</span>      <span class="n">Z</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> <span class="c1">#subgraph 
+</span>      <span class="k">if</span> <span class="n">activation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">activation</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="c1">#supposed to return relu(Z) or just Z
+</span>      <span class="k">else</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">Z</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>then the dnn is obvious</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hidden1</span> <span class="o">=</span> <span class="n">neuron_layer</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="s">"hidden1"</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">"relu"</span><span class="p">)</span><span class="n">hidden2</span> <span class="o">=</span> <span class="n">neuron_layer</span><span class="p">(</span><span class="n">hidden1</span><span class="p">,</span> <span class="n">n_hidden2</span><span class="p">,</span> <span class="s">"hidden2"</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">"relu"</span><span class="p">)</span>
+<span class="n">logits</span> <span class="o">=</span> <span class="n">neuron_layer</span><span class="p">(</span><span class="n">hidden2</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">,</span> <span class="s">"outputs"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The tensorflow has its own way of doing this</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">tensorflow.contrib.layers</span> <span class="kn">import</span> <span class="n">fully_connected</span>
+
+<span class="n">hidden1</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">"hidden1"</span><span class="p">)</span>
+<span class="n">hidden2</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">hidden1</span><span class="p">,</span> <span class="n">n_hidden2</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">"hidden2"</span><span class="p">)</span>
+<span class="n">logits</span> <span class="o">=</span> <span class="n">fully_connected</span><span class="p">(</span><span class="n">hidden2</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">"outputs"</span><span class="p">,</span> <span class="n">activation_fn</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>loss function is defined as</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xentropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sparse_softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">xentropy</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"loss"</span><span class="p">)</span>
+</code></pre></div></div>
+<p>and thus we optimize loss function by</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span><span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h5 id="execution-phase">Execution Phase</h5>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">num_examples</span> <span class="o">//</span> <span class="n">batch_size</span><span class="p">):</span>
+    <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">next_batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
+</code></pre></div></div>
+:ET

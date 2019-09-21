@@ -1,0 +1,32 @@
+I"F<h1 id="semi-supervised-learningiii-graph-continued">Semi-supervised Learning(III): Graph Continued</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Inductive(generalize)</th>
+      <th>Transductive(X generalize)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>supervised</td>
+      <td>SVM, Max Entropy</td>
+      <td>X itself</td>
+    </tr>
+    <tr>
+      <td>ssl</td>
+      <td>Manifold Regularization</td>
+      <td>Label Propagation</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Besides label propagation, there are other schemes based on random walk(modified adsorption), information theory K-L divergence(measure propagation).</p>
+
+<h3 id="references">References</h3>
+
+<p>A good Tutorial on Graph Based SSL:</p>
+
+<p>http://graph-ssl.wdfiles.com/local–files/blog%3A_start/graph_ssl_acl12_tutorial_slides_final.pdf</p>
+:ET

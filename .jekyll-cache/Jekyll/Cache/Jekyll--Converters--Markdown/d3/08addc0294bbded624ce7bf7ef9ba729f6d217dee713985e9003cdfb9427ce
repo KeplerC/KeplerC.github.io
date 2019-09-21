@@ -1,0 +1,119 @@
+I"�*<h2 id="decision-trees">Decision Trees</h2>
+<p>we can train a decision tree by</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span> <span class="c1"># petal length and width
+</span><span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+<span class="n">tree_clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">tree_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+<p>and visualize by</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">export_graphviz</span>
+<span class="n">export_graphviz</span><span class="p">(</span>
+<span class="n">tree_clf</span><span class="p">,</span>
+<span class="n">out_file</span><span class="o">=</span><span class="n">image_path</span><span class="p">(</span><span class="s">"iris_tree.dot"</span><span class="p">),</span>
+<span class="n">feature_names</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span>
+<span class="n">class_names</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">,</span>
+<span class="n">rounded</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="n">filled</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+</code></pre></div></div>
+<p>dot -Tpng iris_tree.dot -o iris_tree.png</p>
+
+<p>The prediction of decision tree is basically like binary tree. Based on root node decide on which branch to go.</p>
+
+<ul>
+  <li>sample: how many training instances it applies to</li>
+  <li>value: how many training instances of each class has node applies to</li>
+  <li>gini: impurities of a node; gini =0 -&gt; all training instances apply to same class</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tree_clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Then for a single node, we evaluate with highest probability</p>
+
+<p>Gini impurity is similar (make no difference) to entropy</p>
+
+<p><strong>decision tree is nonparametric: it does not make any assumption to data</strong></p>
+
+<h4 id="regularization">Regularization</h4>
+<p>to avoid overfit</p>
+<ul>
+  <li>we can restrict  <strong>max_depth</strong></li>
+  <li><strong>min_samples_split</strong> the minimum number of samples a node must have before splitting</li>
+  <li>max_leaf_nodes</li>
+</ul>
+
+<h4 id="regression">Regression</h4>
+<p>The algorithm splits each region in a way that makes most training instances as close as possible to that predicted value</p>
+
+<h4 id="instability">Instability</h4>
+<p>decision tree loves perpendicular to axis, so it will be unstable if training set rotates. Also it is sensitive to variations of training data</p>
+
+<h2 id="ensemble-learning-and-random-forest">Ensemble Learning and Random Forest</h2>
+<p>Aggregated answer is better than an expert’s answer: ensemble learning.</p>
+<blockquote>
+  <p>A very simple way to create an even better classifier is to aggregate the predictions of each classifier and predict the class that gets the most votes. This majority-vote classifier is called a hard voting classifier</p>
+</blockquote>
+
+<p>Aggregating weak leaners and ensemble a strong leaner</p>
+
+<p>from the result of the book and mine, 
+LogisticRegression 0.864
+RandomForestClassifier 0.872
+SVC 0.888
+VotingClassifier 0.896
+the voting classifier has highest probability</p>
+
+<h3 id="bagging-and-pasting">Bagging and Pasting</h3>
+<p>Besides having different training algorithm, we can also have different random subsets of training set.
+    * with replacement: bagging
+    * without pasting</p>
+
+<blockquote>
+  <p>Once all predictors are trained, the ensemble can make a prediction for a new instance by simply aggregating the predictions of all predictors. The aggregation function is typically the statistical mode (i.e., the most frequent prediction, just like a hard voting classifier)</p>
+</blockquote>
+
+<p>The bagging is as following</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">BaggingClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="n">bag_clf</span> <span class="o">=</span> <span class="n">BaggingClassifier</span><span class="p">(</span>
+    <span class="n">DecisionTreeClassifier</span><span class="p">(),</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">max_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span>
+<span class="p">)</span>
+<span class="n">bag_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">bag_clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>ensemble’s predictions will likely generalize much better than the single Decision Tree’s predictions: the ensemble has a comparable bias but a smaller variance (it makes roughly the same number of errors on the training set, but the decision boundary is less irregular)</p>
+</blockquote>
+
+<h2 id="random-forest">Random Forest</h2>
+<p>Instead of building a BaggingClassifier and passing it a DecisionTreeClassifier, you can instead use the RandomForestClassifier class, which is more convenient and optimized for Decision Trees</p>
+
+<p>The book offers an interesting view for random forest classifier: feature importance:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_mldata</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">fetch_mldata</span><span class="p">(</span><span class="s">'MNIST original'</span><span class="p">)</span>
+<span class="n">rnd_clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">rnd_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">mnist</span><span class="p">[</span><span class="s">"data"</span><span class="p">],</span> <span class="n">mnist</span><span class="p">[</span><span class="s">"target"</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">plot_digit</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">hot</span><span class="p">,</span>
+               <span class="n">interpolation</span><span class="o">=</span><span class="s">"nearest"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">"off"</span><span class="p">)</span>
+</code></pre></div></div>
+<p>plot_digit(<strong>rnd_clf.feature_importances_</strong>)</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="n">rnd_clf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="o">.</span><span class="nb">min</span><span class="p">(),</span> <span class="n">rnd_clf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="o">.</span><span class="nb">max</span><span class="p">()])</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s">'Not important'</span><span class="p">,</span> <span class="s">'Very important'</span><span class="p">])</span>
+
+<span class="n">save_fig</span><span class="p">(</span><span class="s">"mnist_feature_importance_plot"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="boosting">Boosting</h3>
+:ET

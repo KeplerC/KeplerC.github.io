@@ -1,0 +1,23 @@
+I"	<h2 id="reinforcement-learning-chapter-16">Reinforcement Learning (Chapter 16)</h2>
+<p>a software agent makes <strong>observations</strong> and takes <strong>actions</strong> within an <strong>environment</strong>, and in return it receives <strong>rewards</strong>.
+It is used to maximize expecteed long-term rewards</p>
+
+<h4 id="applications">Applications</h4>
+<ul>
+  <li>walking robot</li>
+  <li>playing game</li>
+  <li>stock price</li>
+</ul>
+
+<p>Policy: The algorithm used by the software agent to determine its actions
+policy search: brute force approach that try out different values for parameters 
+genetic algorithm: create 100 policies randomly and kill 80 worst policies and make 20 survivors to produce 4 offsprings each, which just some random variation on original values</p>
+
+<blockquote>
+  <p>we are picking a random action based on the probability given by the neural network, rather than just picking the action with the highest score. This approach lets the agent find the right balance between exploring new actions and exploiting the actions that are known to work well</p>
+</blockquote>
+
+<p>Another guidance is discount rate r for each step. There has to be a good or bad in situations, by credit assignment problem.</p>
+
+<h4 id="policy-gradient">Policy gradient</h4>
+:ET

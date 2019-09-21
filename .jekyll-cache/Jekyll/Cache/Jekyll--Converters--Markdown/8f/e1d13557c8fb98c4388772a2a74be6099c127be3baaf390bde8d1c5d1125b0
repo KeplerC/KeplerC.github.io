@@ -1,0 +1,35 @@
+I"�<h3 id="spectral-clustering-a-brief-tutorial">Spectral Clustering a Brief Tutorial</h3>
+
+<h3 id="intro">Intro</h3>
+
+<p>Graph based clustering problems are treating clustering as graph partitioning. In this case, it treats cluster points using eigenvectors.</p>
+
+<p>Advantages</p>
+
+<ul>
+  <li>good for sparse data</li>
+  <li>don’t make assumption on statistics</li>
+</ul>
+
+<h3 id="matrices">Matrices</h3>
+
+<p>D(degree matrix) = d(v_i) for i = j, 0 otherwise</p>
+
+<p>​	which has degree of each vertex</p>
+
+<p>Affinity matrix is i,j pair of affinity</p>
+
+<p>Laplacian L = D - A</p>
+
+<p>Spectrum Matrix is k eigen vectors of L with dimension N*k, N is dimension of eigen vector.</p>
+
+<p>After getting spectral matrix, we calculate k means in a much lower dimension</p>
+
+<h3 id="application">Application</h3>
+
+<p>image segmentation, motion segmentation, image clustering etc.</p>
+
+<h3 id="reference">Reference</h3>
+
+<p>https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=7009685</p>
+:ET

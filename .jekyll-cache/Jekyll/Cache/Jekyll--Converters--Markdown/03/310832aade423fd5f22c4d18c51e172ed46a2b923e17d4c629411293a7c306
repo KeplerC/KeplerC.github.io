@@ -1,0 +1,116 @@
+I":<h1 id="neural-networks-and-deep-learning">Neural Networks and Deep Learning</h1>
+<h2 id="ch9-up-and-running-with-tensorflow">CH9 Up and running with Tensorflow</h2>
+
+<p>It is two parts:</p>
+<ul>
+  <li>build a computation graph</li>
+  <li>run it</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"x"</span><span class="p">)</span> <span class="c1">#create nodes 
+</span><span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"y"</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">2</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+
+<span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">initializer</span><span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">initializer</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1">#or 
+</span>
+<span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">init</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+</code></pre></div></div>
+<blockquote>
+  <p>the addition and multiplication ops
+each take two inputs and produce one output. Constants and variables take no input. The inputs and outputs are multidimensional arrays,
+called tensors (hence the name “tensor flow”).</p>
+</blockquote>
+
+<p>for example, for the normal equation, we have</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">theta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matrix_inverse</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">XT</span><span class="p">,</span> <span class="n">X</span><span class="p">)),</span> <span class="n">XT</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+<p>as matrix computation</p>
+
+<p>for gradient computation, one thing to takeaway is assign()</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">training_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradients</span><span class="p">)</span>
+</code></pre></div></div>
+<p>or an autodiff hack:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gradients</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">mse</span><span class="p">,</span> <span class="p">[</span><span class="n">theta</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></div>
+<p>or an optimizer hack</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+<span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">mse</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="placeholder">Placeholder</h4>
+<p>Placeholders don’t actually perform any computation, they just output the data you tell them to output at runtime.They are typically used to pass the training data to TensorFlow during training.
+for example, mini-batch:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</code></pre></div></div>
+<p>set up a place holder that is 2 dimensional, with 3 columns and any size</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#here to define placeholders because we don't know what kind of data we have
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">"X"</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">"y"</span><span class="p">)</span>
+
+<span class="c1">#fetch batch
+</span><span class="k">def</span> <span class="nf">fetch_batch</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batch_index</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+    <span class="n">dummy_load</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span>
+
+<span class="c1">#train
+</span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">batch_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batches</span><span class="p">)</span><span class="n">P</span>
+            <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="o">=</span> <span class="n">fetch_batch</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batch_index</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
+    <span class="n">best_theta</span><span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="saving-and-restoring">saving and restoring</h4>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#save
+</span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">save_path</span> <span class="o">=</span> <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s">"."</span><span class="p">)</span>
+
+<span class="c1">#load
+</span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">save_path</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="tensorboard">Tensorboard</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#add a time stamp 
+</span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">Y</span><span class="si">%</span><span class="s">m</span><span class="si">%</span><span class="s">d</span><span class="si">%</span><span class="s">H</span><span class="si">%</span><span class="s">M</span><span class="si">%</span><span class="s">S"</span><span class="p">)</span>
+<span class="n">root_logdir</span> <span class="o">=</span> <span class="s">"tf_logs"</span>
+<span class="n">logdir</span> <span class="o">=</span> <span class="s">"{}/run-{}/"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">root_logdir</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+
+<span class="n">mse_summary</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s">'MSE'</span><span class="p">,</span> <span class="n">mse</span><span class="p">)</span>
+<span class="n">file_writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="n">logdir</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">())</span>
+
+<span class="c1">#... in loop
+</span>        <span class="n">summary_str</span> <span class="o">=</span> <span class="n">mse_summary</span><span class="o">.</span><span class="nb">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
+        <span class="n">file_writer</span><span class="o">.</span><span class="n">add_summary</span><span class="p">(</span><span class="n">summary_str</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+<span class="c1">#close it 
+</span><span class="n">file_write</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<p>$ source evn/bin/activate
+$ tensorboard –logdir tf_logs/</p>
+
+<p>Operation: name scope: group related nodes</p>
+
+<p>Relu: rectified linear units 
+    linear function as input, result is positive or 0</p>
+:ET

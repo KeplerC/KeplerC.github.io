@@ -1,0 +1,54 @@
+I"	<p>The following blog tries to survey papers of Mobile Power Management.</p>
+
+<p>Never mind, a killer survey: https://onlinelibrary.wiley.com/doi/full/10.1002/dac.3234.</p>
+
+<h3 id="measurement">Measurement:</h3>
+
+<p>Except HW Monsoon and SW power tutor:</p>
+
+<p>battery historian 2.0(by google)</p>
+
+<p>https://github.com/google/battery-historian</p>
+
+<h3 id="estimation">Estimation:</h3>
+
+<p>Application Processor(Multicore):online estimation of application-level power consumption. It has mean absolute percentage error (MAPE) of 5.1%</p>
+
+<p>https://www.sciencedirect.com/science/article/pii/S1383762117301947</p>
+
+<p>(2017)</p>
+
+<p>Power Estimation:</p>
+
+<p>https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=6629277</p>
+
+<p>the difference between the measured data
+and the calculated power numbers are very small, with all differences less than 18%</p>
+
+<p>(2013)</p>
+
+<p>full-system simulator:</p>
+
+<p>it provides detailed performance metrics for an entire system.</p>
+
+<p>26.8% error rate for various network packet loss rates
+power modeling accuracy within 12.8% error rate</p>
+
+<p>https://ieeexplore.ieee.org/document/7482099/</p>
+
+<h3 id="optimization">Optimization</h3>
+
+<p>stops RILD(LTE/GSM):https://ieeexplore.ieee.org/document/7980184/ can reduce 42%</p>
+
+<p>(2017)</p>
+
+<h3 id="others">Others:</h3>
+
+<p>Context Aware app profiling</p>
+
+<p>a self-adaptive framework that haves three power profiles that react to battery level, status and context</p>
+
+<p>https://ieeexplore.ieee.org/document/6906452/</p>
+
+<p>(2014)</p>
+:ET

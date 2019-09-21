@@ -1,0 +1,66 @@
+I"¹	<h1 id="how-to-structure-projects">How to structure projects</h1>
+<h2 id="orthogonalization">Orthogonalization</h2>
+<p>chain of assumption: training set well -&gt; dev set -&gt; test set -&gt; perform well in real world</p>
+
+<h3 id="metric">Metric</h3>
+<p>maximize Accuracy 
+subject to running time &lt; XX ms
+then accuracy is optimizing metric and running time is satisfying metric</p>
+
+<h3 id="devtest-sets">Dev/Test sets</h3>
+<p>dev set is development set 
+use dev set for optimization and close and close to target
+then use test set is test</p>
+
+<h3 id="human-level-performance">Human level performance</h3>
+<p>Bayes optimal error: best possible error for function x -&gt; y</p>
+
+<h2 id="error-analysis">Error Analysis</h2>
+<p><strong>ceiling</strong> of optimization: the max of total improvement on 
+have a table about every image that misclassified and then add comments on it</p>
+
+<p>deep learning algorithm is robust to random errors (reasonably) but not systematic error</p>
+
+<p>training-dev set: same distribution as training set, but not used for training 
+then we can see a difference between variance problem and mismatch problem</p>
+
+<p>training error 1%
+t - d error    10% then not generalize not well 
+and vise versa, it is data mismatch problem(high diff btw training-dev and dev error)
+so we can get a error type chart</p>
+
+<p>HUMAN LEVEL
+**avoidable bias **
+TRAINING ERROR 
+**variance **
+TRAINING_DEV SET ERROR 
+**data mismatch **
+DEV ERROR 
+**degree of overfitting to dev set **
+TEST ERROR</p>
+
+<h3 id="transfer-learning">Transfer learning</h3>
+<p>instead of retraining from beginning, 
+because there is much less data available for specific case
+just add layers of neurons after the output layer</p>
+
+<p>Assumption: 
+Task A and B have same input x 
+task A has much more data than B (to transfer from A to B)</p>
+
+<h3 id="multi-task-learning">multi-task learning</h3>
+<p>multi-output neural network 
+unlike softmax regression: set single label to single example
+this assign different labels 
+training four labels is faster than training 4 nns 
+you can still train with some labels missing 
+    just sum over available values</p>
+
+<p>Assumption: 
+    training a set of tasks that could benefit from having shared lower-level features 
+    amount of data is similar 
+    can train a big enough neural network to do well</p>
+
+<h2 id="end-to-end-learning">End-to-end learning</h2>
+<p>Instead of having a series of layers (like transferring to one format then another)</p>
+:ET

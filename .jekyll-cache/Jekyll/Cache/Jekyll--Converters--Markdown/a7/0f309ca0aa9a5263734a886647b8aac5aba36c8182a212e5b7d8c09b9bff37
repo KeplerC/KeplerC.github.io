@@ -1,0 +1,56 @@
+I"Ù<h2 id="chapter-8-dimensionality-reduction">Chapter 8: Dimensionality Reduction</h2>
+<p>Most of machine learning algorithm suffer from curse of dimensionality. When new instance far way from any training instance</p>
+
+<h3 id="approaches">Approaches</h3>
+<h4 id="projection">Projection</h4>
+<p>By projection, we can reduce dimensionality. However, subspace may twist and turn, like <em>Swiss roll</em>, which simply projecting onto a plane will not work</p>
+
+<h3 id="pca">PCA</h3>
+<p>This algorithm identifies the hyper plane that lies closet to the data and projects data onto it. 
+The selection that justifies is to choose maximum amount of variance (avoid losing important information) and minimum mean square distance.</p>
+
+<p>To obtain principal components, we use <strong>SVD</strong>
+by</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X_centered</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#PCA assumes that the dataset is centered around the origin.
+</span><span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X_centered</span><span class="p">)</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="c1">#we need V^T
+</span><span class="n">c2</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">#Projecting data
+</span><span class="n">W2</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">X2D</span> <span class="o">=</span> <span class="n">X_centered</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W2</span><span class="p">)</span>
+</code></pre></div></div>
+<p>or in SciKit Learn</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">X2D</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We can choose right dimension by find elbow 
+it is generally preferable to choose the number of dimensions that add up to a sufficiently large portion of the variance (e.g., 95%).</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">()</span>
+<span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">cumsum</span> <span class="o">&gt;=</span> <span class="mf">0.95</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1"># or 
+</span><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+<span class="n">X_reduced</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<h4 id="for-compression">For compression</h4>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span> <span class="o">=</span> <span class="mi">154</span><span class="p">)</span>
+<span class="n">X_mnist_reduced</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_mnist</span><span class="p">)</span>
+<span class="n">X_mnist_recovered</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X_mnist_reduced</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="maniford-learning">Maniford Learning</h4>
+<p>A detailed explanation and visualization can be found <a href="https://prateekvjoshi.com/2014/06/21/what-is-manifold-learning/">here</a>
+The point is that: we have a non linear version of PCA.</p>
+
+<h4 id="locally-linear-embedding-lle">Locally Linear Embedding (LLE)</h4>
+<p>it is also another nonlinear dimensionality reduction. 
+It is to find k nearest neighbors and find linear relationships to them 
+Then based on weight matrix, we map the training instances into d-dimensional space while preserving local relationships.</p>
+:ET

@@ -1,0 +1,45 @@
+I"
+<h1 id="unsupervised-neural-translation-machine-translation">Unsupervised Neural Translation Machine Translation</h1>
+<p>Artetxe, Cho</p>
+
+<p>Traditionally NMT requires large parallel corpus. This method relies on unsupervised cross-lingual embeddings. By a shared encoder for both translation encoder, the entire system is trained using monolingual data and reconstruct the input.</p>
+
+<h3 id="keywords">Keywords</h3>
+<p>cross-lingual word embedding: TODO:next paper 
+low resource neural machine translation: independently translation by a pivot language A-&gt;B-&gt;C to translate from A to C</p>
+
+<h3 id="method">Method</h3>
+
+<p>two layer encoder &amp; two layer decoder: only one encoder shared by both languages</p>
+<ul>
+  <li>dual structure: handle both directions together</li>
+  <li>shared encoder: This universal encoder is aimed to produce a language independent representation of the input text, which each decoder should then transform into its corresponding language</li>
+  <li>
+    <p>fixed embedding: pre-trained</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>          decoder for its own language -&gt; reconstruct the other lanuage
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>shared encoder -&gt;into language independent embedding</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            (when inference, replace) decoder for the target language
+</code></pre></div></div>
+
+<h4 id="denoising">denoising:</h4>
+<p>optimizes the probability of encoding a noised version of the sentence with shared encoder and reconstruct using L1 encoder. It
+exploit dual structure of machine translation. The shared encoder can reconstruct its own input.</p>
+
+<h4 id="backtranslation">backtranslation:</h4>
+<p>Iit translates the sentence in inference mode(encoding with shared &amp; decoding with L2) and optimizes with probability of encoding the probability of translated sentence with shared encoder and recovering the original setence with L1 encoder.</p>
+
+<h3 id="thoughts">Thoughts</h3>
+<p>This paper uses the method that we are familiar with, which reconstruct the input in unsupervised learning. It has two part that worthwhile considiering:</p>
+<ul>
+  <li>pre-trained embedding(which is key to my paper)</li>
+  <li>a reconstruction that can translate from one to the other, in a totally unsupervised way.</li>
+</ul>
+
+<p>If we can construct the embedding of time series in some way, and this way might offer a way to train a generative model that does the way for us.</p>
+:ET

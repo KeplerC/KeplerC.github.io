@@ -1,0 +1,24 @@
+I"ä<h1 id="wander-join-online-aggregation-via-random-walks">Wander Join: online aggregation via random walks</h1>
+<p>by Feifei Li et al.</p>
+
+<h3 id="problem-formulation">Problem formulation:</h3>
+
+<h5 id="data-aggregation">Data aggregation:</h5>
+
+<p>It provides approximate answers for online queries; Data aggregation is any process in which information is gathered and expressed in a summary form, for purposes such as statistical analysis.</p>
+
+<h5 id="online-aggregations-for-joins">online aggregations for joins</h5>
+
+<p>Ripple join: repeatedly takes samples from each table by RR, and every time new tuple comes in, join with all other tuples.</p>
+
+<h3 id="wander-join">Wander Join</h3>
+
+<p>Build a join relation tuples and sample <img src="./img/404.png" alt="./img/404.png" />. Then sample by picking vertex in R1 at random and random walk to R3: by using Horvitz-Thompson estimator, we might remove biased overestimate in random walk.</p>
+
+<p>With enough and unbiased sampling, we may get what we want.</p>
+
+<h5 id="after">After</h5>
+
+<p>I am literally crying because I have reviewed so many papers. I am studying matrices/data with missing observations and I have reviewed for hundreds of related papers. I do need time to post them here.</p>
+
+:ET

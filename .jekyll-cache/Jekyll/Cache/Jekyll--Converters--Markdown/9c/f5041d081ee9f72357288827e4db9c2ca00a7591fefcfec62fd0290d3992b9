@@ -1,0 +1,42 @@
+I"�<h1 id="cnn-chpater-13">CNN (chpater 13)</h1>
+<p><strong>Local receptive field</strong>: neurons that react only to limited region of visual field. These fields may overlap and combine to cover whole visual field.</p>
+
+<p><strong>Convolution</strong>: slides one function over another and measures the integral of their pointwise multiplication.</p>
+
+<blockquote>
+  <p>A neuron located in row i, column j of a given layer is connected to the outputs of the neurons in the previous layer located in rows i to i + fh – 1, columns j to j + fw – 1, where fh and fw are the height and width of the receptive field
+(another way of doing this is to use j * s )</p>
+</blockquote>
+
+<p>zero padding: in order for a layer to have same height/width as previous layer, add zeros around input</p>
+
+<h3 id="filter">Filter</h3>
+<p>neuron can have different weights and have small image represented as the size of receptive field. CNN can find msot userful filters(horizontal &amp; vertical) and generate complex patterns 
+Feature map: a layer full of neurons using the same filter</p>
+<ul>
+  <li>all neurons have same parameter(weights and bias) on one feature map</li>
+  <li>a neuron’s receptive filed extends across <strong>all</strong> previous layers’ feature maps</li>
+</ul>
+
+<h4 id="tensorflow">Tensorflow</h4>
+<p>have to specify size, the stride, and the padding type.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">channels</span><span class="p">))</span> <span class="c1">#mini batch input
+</span><span class="n">convolution</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s">"SAME"</span><span class="p">)</span>
+
+<span class="c1"># Run it 
+</span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">convolution</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">dataset</span><span class="p">})</span>
+</code></pre></div></div>
+
+<h4 id="pooling-layer">Pooling layer</h4>
+<p>subsample (shrink) the input image to reduce computational load
+it does not have weights: it just do max or mean</p>
+
+<h5 id="requirement-high-memory-usage">Requirement: High memory usage</h5>
+
+<h3 id="architecture">Architecture</h3>
+<blockquote>
+  <p>Typical CNN architectures stack a few convolutional layers (each one generally followed by a ReLU layer), then a pooling layer, then another few convolutional layers (+ReLU), then another pooling layer, and so on</p>
+</blockquote>
+
+:ET

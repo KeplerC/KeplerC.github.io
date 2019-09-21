@@ -1,0 +1,28 @@
+I"�<h1 id="wavenet-a-generative-model-for-raw-audio">Wavenet: a generative model for raw audio</h1>
+<p>Van den Oord et al.</p>
+
+<p>This paper presents a generative, probabilistic and autoregressive approach based on PixelCNN.</p>
+<ul>
+  <li>it can generate raw speech signals with subjective naturalness</li>
+  <li>dilated causal convolution to deal with temporal dependencies</li>
+</ul>
+
+<h3 id="wavenet">Wavenet</h3>
+<p>Because it is a generative model, it calculates the conditional probability such that p(x) = p(xt | x1 … xt-1) and each audio sample is conditioned on previous time steps.</p>
+
+<h4 id="architecture">Architecture</h4>
+<p>It is based on causal convolution: the order cannot be changed on time steps. For very long sequences, it is typically faster than RNN. 
+It is dilated: such convolution effectively allows the network to operate on a coarser scale than a normal convolution. Then it can stride.</p>
+
+<h3 id="experiments-for-this-paper">Experiments for this paper</h3>
+<h4 id="multi-speaker-speech-generation">Multi-speaker speech generation</h4>
+<p>This is similar to generative models of language or images, where samples look realistic at first glance, but are clearly unnatural upon
+closer inspection.
+A single WaveNet was able to model speech from any of the speakers by conditioning it on a one-hot encoding of a speaker(speaker ID and model).</p>
+<h4 id="text-to-speech">Text to Speech</h4>
+<p>It works better than LSTM… (Well I have to question: what about others? what about nsync? is it better?)</p>
+<h3 id="thoughts">Thoughts</h3>
+<p>Well, this paper coincides(or just because of my lack of knowledge) with my idea a few days ago.</p>
+
+<p>A few idea: can usage of GAN improve the result?</p>
+:ET

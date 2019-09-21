@@ -1,0 +1,19 @@
+I"r<h1 id="block-chain-technology">Block Chain Technology</h1>
+
+<p>Today I went to BlockChain conference held by the government, which is trying to build a financial center named <em>BC Bay</em>. Here are a few points as my thoughts and takeaway:</p>
+
+<h3 id="applications-cryptocurrency">Applications: Cryptocurrency</h3>
+<p>I just find this name very interesting crypto - currency. There are two characteristics for blockchain:</p>
+<ul>
+  <li>it is not hackable theoretically: when everyone gets a copy with a time stamp, there is no way to modify the record or change what was originally planned. There are applications for it, like Smart Contract. Because the contract is expressed by logic flow.</li>
+  <li>security. Because of public key private key pair, it can be very secure. However, if you lost private key, just like you lost 100 dollars on the street. You can never get it back</li>
+</ul>
+
+<h3 id="centralization-and-decentralization-where-to-draw-the-line">Centralization and Decentralization: Where to draw the line</h3>
+<p>The core of BlockChain is decentralization. However, there is a place where I raise my doubts. The key for BC is to decentralize. When there is no the third party in it, like no one is judging and things are self-evident, it is fine. However, in the discussions, there were lot of (or even most of ) applications depending on the third party(like the companies in the conference). The convenience that we saved in the loop found itself in the workload of the third party. Just like you are using ebay, but ebay has to host a lot of consumer services for jurisdiction.</p>
+
+<h3 id="not-blockchain-for-blockchain">Not blockchain for blockchain</h3>
+<p>This is a key thing that I want to mention. Because a lot of applications that you can solve without blockchain, and these applications are perfectly fine. However, you still have it.</p>
+
+<p>Here is a thing that always keep in my mind. Why do we use machine learning? Why don’t we just go ahead and calculate a mean(or other operations ) on a Microsoft Excel? To WHAT EXTENT do we need an excel spreadsheet and TO WHAT EXTENT we need machine learning to organize data?</p>
+:ET

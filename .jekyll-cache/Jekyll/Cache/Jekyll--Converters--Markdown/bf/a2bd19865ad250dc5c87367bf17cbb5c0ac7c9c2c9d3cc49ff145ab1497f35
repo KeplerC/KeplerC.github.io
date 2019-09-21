@@ -1,0 +1,42 @@
+I"”<h2 id="trainingchapter-4">Training(chapter 4)</h2>
+<p>This is covered more by professor Andrews Ng, so I will study cs229 after this one.</p>
+
+<h2 id="svm">SVM</h2>
+<p>SVM has hard classification and soft classification. Hard Classification is linearly separable, soft classification gives margin violations.</p>
+
+<p>The python code is simple</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">svm_clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">((</span>
+    <span class="p">(</span><span class="s">"scaler"</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s">"linear_svc"</span><span class="p">,</span> <span class="n">LinearSVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s">"hinge"</span><span class="p">)),</span> <span class="c1">#applies Stochstic Gradient Descent rather than batch
+</span><span class="p">))</span>
+<span class="n">svm_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+<p>and can add polynomial features by</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="p">(</span><span class="s">"poly_features"</span><span class="p">,</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+</code></pre></div></div>
+<p>and then do linear SVC</p>
+
+<blockquote>
+  <p>Adding polynomial features is simple to implement and can work great with all sorts
+of Machine Learning algorithms (not just SVMs), but at a low polynomial degree it
+cannot deal with very complex datasets, and with a high polynomial degree it creates
+a huge number of features, making the model too slow.</p>
+</blockquote>
+
+<h3 id="gaussian-radial-basis">Gaussian Radial Basis</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="s">"svm_clf"</span><span class="p">,</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s">"rbf"</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">0.001</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="computational-complexity">Computational complexity</h4>
+<p>linear SVC m<em>n
+SGD m</em>n
+SVC m^2~m^3 * n</p>
+
+<p>Decision and prediction</p>
+
+<p>decision function = 0 if theta^T . x &lt; 0 and vise versa
+The goal is to minimize ||theta|| conditioned on &gt;1 on positive cases and &lt;-1 on negative instances</p>
+
+<h4 id="hinge-loss">Hinge Loss</h4>
+<p>equivalent to max(0, 1 â€“ t)</p>
+:ET

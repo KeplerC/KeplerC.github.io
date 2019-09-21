@@ -1,0 +1,85 @@
+I"'
+<h1 id="notes-from-beginningiii">Notes From Beginning(III)</h1>
+
+<h2 id="neural-network">Neural Network</h2>
+<h3 id="representation">Representation</h3>
+
+<ul>
+  <li>Neuron: computational unit</li>
+  <li>Dendrites: input</li>
+  <li>axon: output</li>
+  <li>layers: hidden layer, input layer(layer 1), output layer</li>
+  <li>weights: \theta(parameters in \theta^Tx)</li>
+  <li>activation function: logistic function that we used before</li>
+  <li>bias unit a_0</li>
+</ul>
+
+<p>As a result, the model looks like an input vector is passed into a neuron, then output a hypothesis function.</p>
+
+<p>[layer 1] -&gt; [layer2] -&gt; [layer 3]</p>
+
+<h4 id="notations">Notations</h4>
+<p>a_i^j activation of unit i in layer j
+\Theta^j matrix of weights controlling function mapping from layer j to layer j+1</p>
+
+<p>Then 
+a_1^2 = g(\Theta^1_10 x0 + \Theta^1_11 x1 +\Theta^1_12 x2 +\Theta^1_13 x3 )</p>
+
+<p>the dimension of \Theta is 
+s_{j+1} * (s_j + 1)</p>
+
+<h4 id="vector-representation">Vector Representation</h4>
+<p><strong>z</strong>^j = <strong>\Theta</strong> ^{j-1} <strong>a</strong>{j-1}</p>
+
+<h4 id="intuition">Intuition</h4>
+
+<p>[] -30
+[] +20 -&gt; []   g(-30 + 20 x_1 + 20 x_2) 
+[] +20</p>
+
+<p>grouping these neurons together and form more complex logic gates</p>
+
+<h5 id="multiclass-classification">Multiclass classification</h5>
+<p>having a vector(rather than a number) as output 
+and output for object A should be [0, 0, 0, 1] rather than [1, 2, 3, 4]</p>
+
+<h3 id="learning">Learning</h3>
+<h4 id="cost-function">Cost Function</h4>
+<p>{training set (x^m, y^m)}
+L: total number of layers
+s_l: number of units in layer l</p>
+
+<p>Binary classification: one output 0 or 1
+Multi class classification: K classes where y \in \R^K</p>
+
+<p>The cost function will be a generalized version of logistic regression
+<strong>by adding K component together</strong></p>
+
+<h4 id="back-propagation-algorithm">Back Propagation Algorithm</h4>
+<p>\delta_j^l error of node j in layer l
+\Delta_{ij}^l compute partial derivative of equation [1]</p>
+
+<p>goal: minimize the cost function J</p>
+
+<p>in a four-layered neural network
+Forward propagation: 
+a^1 = x 
+z^2 = \Theta^1 a^1
+a^2 = g(z^2)
+z^3 = \Theta^2 a^2
+…</p>
+
+<p>Then back propagate: 
+l = 4
+\delta^4 = a^4_j - y_j
+\delta^3 = (\Theta^3)^T\delta^4 .* g’(z^3)</p>
+
+<p><strong>dJ/d\Theta_{ij}^l = a_j^l \delta_i^{l+1}</strong> [1]</p>
+
+<h5 id="in-practice">in Practice</h5>
+<h6 id="unrolling-parameters">Unrolling parameters</h6>
+<p>vector = [Theta1, Theta2, Theta3]
+call reshape(vector(#range), size, size)</p>
+
+<h5 id="gradient-checking">Gradient Checking</h5>
+:ET

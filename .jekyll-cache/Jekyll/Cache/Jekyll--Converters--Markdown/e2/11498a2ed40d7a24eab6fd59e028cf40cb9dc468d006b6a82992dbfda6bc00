@@ -1,0 +1,74 @@
+I"<h1 id="mri-skull-stripping">MRI Skull Stripping</h1>
+
+<p>Kaiyuan Chen(chenkaiyuan@ucla.edu)</p>
+
+<p>Jingyue Shen(brianshen@ucla.edu)</p>
+
+<h3 id="links">Links:</h3>
+<h4 id="github-repo">Github Repo:</h4>
+<p>https://github.com/KeplerC/MRI-Skull-Stripping.git</p>
+<h4 id="report">Report:</h4>
+<p>https://github.com/KeplerC/keplerc.github.io/raw/master/_posts/src/MRI_report.pdf</p>
+<h4 id="poster">Poster:</h4>
+<p>https://github.com/KeplerC/keplerc.github.io/raw/master/_posts/src/MRI_poster.pdf</p>
+
+<h3 id="introduction">Introduction</h3>
+<p>Please refer to
+http://kychen.xyz/2018/05/16/skullreview-2018/
+for a comprehensive review on</p>
+<ul>
+  <li>what is MRI</li>
+  <li>why do we need skull stripping</li>
+  <li>how does this work</li>
+  <li>a review of recent works</li>
+  <li>bridging skull stripping to machine learning</li>
+  <li>a plan of this work</li>
+</ul>
+
+<h3 id="outline">Outline</h3>
+
+<p>1) The baseline model should be sklearn-based supervised learning. These models are very easy to implement, so I will try out different supervised learning approach like random forest, decision trees and other linear models to see which one works better.</p>
+
+<p>2) Autoencoder. We plan to stack CNNs and calculate RMSE on recovered image in Tensorflow.</p>
+
+<p>3) Other Compressed Sensing approaches. Other compressed sensing generative models like VAE.</p>
+
+<h3 id="io">I/O</h3>
+<h4 id="feature-selection">Feature Selection</h4>
+
+<p>For sklearn models, we choose 
+P(this pixel should be removed | (position x, position y), color, surrounding pixels as a local patch) 
+and currently, because of the limitation of my computer memory, the patch size is 4 * 4. One can update it by changing m in my source code.</p>
+
+<p>For CNN Autoencoder model, we feed the entire image to CNN, since we think dealing with matrices of size 256x256 should work fine on a laptop computer. Due to the limited amount of data (about 660 images of brains), we currently set batch size = 15
+and epoch time = 100 for training. One can modify the configuration by changing the hyperparameters in code/config.py.</p>
+
+<h4 id="preprocessing">Preprocessing</h4>
+<p>For sklearn models,  we perform a comparison on local patch or other features.</p>
+
+<p>For CNN model, we now simply divide each image’s pixel value by 255. We are going to explore batch normalization technique later.</p>
+
+<h3 id="code-snippets">Code Snippets</h3>
+
+<p>For all baseline codes and experiments, you can go to a blog post(http://kychen.xyz/2018/05/16/jpskull-2018/) or the <strong>jupyter notebook</strong> in the ./code.</p>
+
+<p>For CNN Autoencoder code, you can find it in the ./code folder in the repository.</p>
+
+<h3 id="dates">Dates</h3>
+
+<p>2018-6-2 Finished Everything</p>
+
+<p>2018-5-28 Finished Report</p>
+
+<p>2018-5-26 Finished CNN Autoencoder models</p>
+
+<p>2018-5-16 Finished up other sklearn models in jupyternotebook</p>
+
+<p>2018-5-13 Finished Baseline model(random forest)</p>
+
+<p>2018-5-12 Creating Starter codes</p>
+
+<p>2018-5-4 Writing Introduction/Literature Reviews</p>
+
+<p>2018-5-1 Selecting Topics</p>
+:ET

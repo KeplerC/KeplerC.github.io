@@ -1,0 +1,106 @@
+I"<h1 id="notes-from-beginningvi">Notes From Beginning(VI)</h1>
+<h2 id="unsupervised-learning">Unsupervised Learning</h2>
+<p>supervised learning: given a set of label and find a hypothesis, like {x^n, y^n}
+but unsupervised learning is just {x^n}</p>
+
+<h3 id="k-means-algorithm">K-means algorithm</h3>
+<ol>
+  <li>random initialize K cluster centroids</li>
+  <li>assign every points to K cluster
+    <ol>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>take the min</td>
+              <td> </td>
+              <td>x^i - \mu_k</td>
+              <td> </td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ol>
+  </li>
+  <li>move cluster to the new centroid
+    <ol>
+      <li>1/n * [all the n vectors ]</li>
+    </ol>
+  </li>
+</ol>
+
+<h4 id="optimization-objective">Optimization objective</h4>
+<p>To minimize the square distance between data point to centroid 
+for the first step, minimize J w.r.t clusters 
+for the second step, minimize J w.r.t mu</p>
+
+<h4 id="random-initialization">Random Initialization</h4>
+<p>K &lt; m 
+randomly pick K training examples,
+set mu_1 … mu_k equal to these K examples</p>
+
+<p>K means can end up with different solutions 
+so we try to use K means multiple times and pick clustering that gave lowest cost</p>
+
+<h4 id="choosing-number-of-clusters">choosing number of clusters</h4>
+<ul>
+  <li>elbow method: cost decrease from rapidly to more slowly</li>
+</ul>
+
+<h3 id="pca">PCA</h3>
+<h4 id="motivation-for-dimensionality-reduction">Motivation for dimensionality reduction</h4>
+<h5 id="data-compression">Data compression</h5>
+<p>project high dimension to low dimension 
+speed up, reduce memory</p>
+<h5 id="data-visualization">Data Visualization</h5>
+<p>the axis usually be meaningless</p>
+
+<h4 id="algorithm-formulation">algorithm formulation</h4>
+<p>Generally speaking it is to find a low dimensional structure that has smallest distance.Then we use a coordinate on that dimension to describe the original data set. 
+It is not linear regression.</p>
+
+<p>we compute by covariance matrix 
+\Sigma = 1/m \Sigma_i x^i * x^i ^T
+computing <strong>Singular Value Decomposition</strong>
+eigenvector 
+[U, S, V] = svd(Sigma)</p>
+
+<p>if we want to reduce it to n dimensions to k dimensions, 
+just take the first k vectors of U</p>
+
+<p>U_{reduce} is a n * k matrix 
+when we take the transpose and take new coordinates by z = U_r * x</p>
+
+<h6 id="mean-normalization-and-feature-scaling-can-be-applied">Mean normalization and feature scaling can be applied</h6>
+
+<h6 id="reconstruction">Reconstruction</h6>
+<p>x_approx = U_reduce * z 
+            u * k    k*1
+            n * 1</p>
+
+<h6 id="choosing-k">choosing k</h6>
+<p>choose the smallest value that 
+average square of error / average square x &lt;= 0.01(99% of variance is retained)</p>
+
+<p>in USV, the S matrix is diagonal matrix that, calculating above value is 
+1 - \frac{\sum^<strong>k</strong> Sii}{\sum^<strong>n</strong> Sii}</p>
+
+<h5 id="supervised-learning-speedup">supervised learning speedup</h5>
+<p>For supervised learning， 
+we extract all the x as input vector, then we apply PCA and reduce dimension
+with this dimension’s value, we have a new and much lower dimension’s training set
+Finding a mapping from x -&gt; z 
+Mapping should be defined only on training set, and then be applied to cross validation and test sets.</p>
+
+<ul>
+  <li>compression
+    <ul>
+      <li>reduce space</li>
+      <li>speed up</li>
+    </ul>
+  </li>
+  <li>visualization</li>
+</ul>
+
+<p>bad use: use it to avoid overfit, it might throw away valuable information(the rest 1%)</p>
+:ET

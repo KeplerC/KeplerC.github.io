@@ -1,0 +1,73 @@
+I"'<h2 id="anomaly-detection">Anomaly detection</h2>
+<p>We model p(x) and p(x_test) &lt; \eps, then flag anomaly</p>
+
+<h3 id="gaussian-distribution">Gaussian Distribution</h3>
+<p>x ~ N(\mu, \standard deviation^2)</p>
+
+<p>p(x) = 
+p(x1; mu1, sq1) * p(x2; m2, sq2) … = product of all p</p>
+
+<p>Algorithm:</p>
+<ol>
+  <li>choose features that you might think indicative</li>
+  <li>fit parameters</li>
+  <li>compute p(x)
+the product(of two pdfs) is the result</li>
+</ol>
+
+<h4 id="developing-and-evaluating-an-anomaly-detection-system">Developing and evaluating an anomaly detection system</h4>
+<p>Assume we have some labelled data, of anomalous and non-anomalous examples, 
+for training set, unlabeled and it’s ok to let anomalous to slip in 
+then use labelled set to test cross validation and test</p>
+
+<p>algorithm</p>
+<ol>
+  <li>fit model p(x) on training set</li>
+  <li>predict on cross validation / test example</li>
+</ol>
+
+<p>evaluation metrics: big-four / precision, recall / F score</p>
+
+<h4 id="choosing-features">Choosing features</h4>
+<p>we use different features, like <strong>different order, log</strong> to make data distributed more Gaussian 
+we choose feature that make usually large/small value in event of anomaly</p>
+
+<h3 id="recommender-system">Recommender System</h3>
+
+<h4 id="content-based-recommender-system">Content-based Recommender system</h4>
+<p>use a vector to describe the degree of class(like romance, action)
+we can treat every user as a linear regression problem 
+to learn all users(all thetas)
+just add a summation to all linear regressions</p>
+
+<h4 id="collaborative-filtering">Collaborative Filtering</h4>
+<p>feature learning: 
+when we have a series of theta for every users, we can infer the features (which are how romantic a movie is)</p>
+
+<h5 id="algorithm">algorithm</h5>
+<p>instead of switching between estimating x and estimating theta, we optimize a general equation such that</p>
+
+<p>J(x, theta) = 1/2 * sum(theta*x - y)^2 + regulation term of theta + regulation term of x</p>
+
+<ol>
+  <li>initialize x and theta to small random values</li>
+  <li>minimize using gradient descent</li>
+</ol>
+
+<h4 id="low-rank-matrix-factorization">low rank matrix factorization</h4>
+<p>we can have a matrix that contain all the predictive rating for users/movies 
+and we compute it as 
+X * Theta’</p>
+<blockquote>
+  <p>In mathematics, low-rank approximation is a minimization problem, in which the cost function measures the fit between a given matrix (the data) and an approximating matrix (the optimization variable), subject to a constraint that the approximating matrix has reduced rank.</p>
+</blockquote>
+
+<h5 id="finding-movies-j-related-to-i">finding movies j related to i</h5>
+<p>we use Euclidean distance</p>
+
+<h5 id="implementation-details">Implementation Details</h5>
+<p>If we do predictive matrix and collaborative filtering directly, for a new user without any information will minimize J by setting every parameter to 0.</p>
+
+<p>To solve this problem, we use mean normalization. 
+we subtract average rating of every matrix and learn theta and x through this new matrix.</p>
+:ET

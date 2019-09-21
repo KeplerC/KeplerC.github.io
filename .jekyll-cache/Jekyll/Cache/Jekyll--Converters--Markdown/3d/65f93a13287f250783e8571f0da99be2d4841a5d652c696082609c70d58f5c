@@ -1,0 +1,12 @@
+I"6	<h1 id="tfdynamic_rnn">tf.dynamic_rnn</h1>
+<p>tf.dynamic_rnn provides two outputs, outputs and state.</p>
+
+<p>The following text is quoted from jdehesa on <a href="https://stackoverflow.com/questions/44162432/analysis-of-the-output-from-tf-nn-dynamic-rnn-tensorflow-function">StackOverflow</a></p>
+
+<h3 id="outputs">outputs</h3>
+<p>contains the output of the RNN cell at every time instant. Assuming the default time_major == False, let’s say you have an input composed of 10 <strong>examples</strong> with 7 <strong>time steps</strong> each and a <strong>feature vector</strong> of size 5 for every time step. Then your input would be 10x7x5 (batch_size x max_time x features). Now you give this as an input to a RNN cell with output size 15. Conceptually, each time step of each example is input to the RNN, and you would get a 15-long vector for each of those. So that is what outputs contains, a tensor in this case of size 10x7x15 (batch_size x max_time x cell.output_size) with the output of the RNN cell at each time step. If you are only interested in the last output of the cell, you can just slice the time dimension to pick just the last element (e.g. outputs[:, -1, :]).</p>
+
+<h3 id="state">state</h3>
+<p>contains the state of the RNN after processing all the inputs. Note that, unlike outputs, this doesn’t contain information about every time step, but only about the last one (that is, the state after the last one). Depending on your case, the state may or may not be useful. For example, if you have very long sequences, you may not want/be able to processes them in a single batch, and you may need to split them into several subsequences. If you ignore the state, then whenever you give a new subsequence it will be as if you are beginning a new one; if you remember the state, however (e.g. outputting it or storing it in a variable), you can feed it back later (through the initial_state parameter of tf.nn.dynamic_rnn) in order to correctly keep track of the state of the RNN, and only reset it to the initial state (generally all zeros) after you have completed the whole sequences. The shape of state can vary depending on the RNN cell that you are using, but, in general, you have some state for each of the examples (one or more tensors with size batch_sizexstate_size, where state_size depends on the cell type and size).</p>
+
+:ET
